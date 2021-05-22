@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../Button";
 
 export const InvoicesPage = () => {
 
@@ -30,7 +31,8 @@ export const InvoicesPage = () => {
                             </p>
                         </div>
                     </div>
-                    <button>New Invoice</button>
+                    {/* add + image */}
+                    <Button content="New Invoice" extraContent="+" />
                 </div>
             </header>
 

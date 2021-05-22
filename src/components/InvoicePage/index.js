@@ -1,19 +1,21 @@
 import React from "react";
+import { Button } from "../Button";
 
 export const InvoicePage = () => {
 
     return (
         <main>
-            <button>Go Back</button>
+            {/* add nice arrow */}
+            <Button content="Go back" extraContent="<" />
             <section>
                 <p>
                     <span>Status</span>
                     <span>Pending</span>
                 </p>
                 <p>
-                    <button>Edit</button>
-                    <button>Delete</button>
-                    <button>Mark as Paid</button>
+                    <Button content="Edit" />
+                    <Button content="Delete" />
+                    <Button content="Mark as Paid" />
                 </p>
             </section>
             <section>

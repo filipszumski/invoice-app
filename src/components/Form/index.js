@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../Button";
 import { StyledForm } from "./styled";
 
 export const Form = () => {
@@ -95,14 +96,16 @@ export const Form = () => {
                     </li>
                     {/* generate elements */}
                 </ul>
-                <button>Add New Item</button>
+                {/* should be full width */}
+                <Button content={"+ Add New Item"} />
             </section>
 
             <section>
-                <button>Discard</button>
+                {/* visible only in invoice creator*/}
+                <Button content={"Discard"} />
                 <div>
-                    <button> Save as Draft</button>
-                    <button>Save & Send</button>
+                    <Button content={"Save as Draft"} />
+                    <Button content={"Save & Send"} />
                 </div>
             </section>
         </StyledForm>
