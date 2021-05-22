@@ -1,11 +1,12 @@
 import React from "react";
+import { StyledForm } from "./styled";
 
 export const Form = () => {
 
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
-        <form action="https://postman-echo.com/post" method="POST">
+        <StyledForm active={false} action="https://postman-echo.com/post" method="POST">
             <h2>New Invoice</h2>
             <section>
                 <fieldset>
@@ -104,6 +105,6 @@ export const Form = () => {
                     <button>Save & Send</button>
                 </div>
             </section>
-        </form>
+        </StyledForm>
     )
 }
