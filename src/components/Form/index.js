@@ -1,104 +1,176 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../Button";
+import { Input } from "../Input";
 import { StyledForm } from "./styled";
+import { ItemList } from "../ItemList";
 
 export const Form = () => {
+    const initialState = {
+        id: "",
+        createdAt: "",
+        paymentDue: "",
+        description: "",
+        paymentTerms: 1,
+        clientName: "",
+        clientEmail: "",
+        status: "",
+        senderAddress: {
+            street: "",
+            city: "",
+            postCode: "",
+            country: ""
+        },
+        clientAddress: {
+            street: "",
+            city: "",
+            postCode: "",
+            country: ""
+        },
+        items: [],
+        total: 556.00,
+    };
+
+    const [invoice, setInvoice] = useState(initialState)
+    console.log(invoice);
 
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
-        <StyledForm active={false} action="https://postman-echo.com/post" method="POST">
+        <StyledForm active={true}>
             <h2>New Invoice</h2>
             <section>
                 <fieldset>
                     <legend>Bill From</legend>
-                    <p>
-                        <label for="sendersStreetAdress">Street Address</label>
-                        <input id="sendersStreetAdress" name="sendersStreetAdress" type="text" />
-                    </p>
+                    <Input
+                        id="sendersStreetAdress"
+                        name="street"
+                        label="Street Address"
+                        type="text"
+                        state={invoice}
+                        setState={setInvoice}
+                        objectInStateName="senderAddress"
+                    />
                     <div>
-                        <p>
-                            <label for="sendersCity">City</label>
-                            <input id="sendersCity" name="sendersCity" type="text" />
-                        </p>
-                        <p>
-                            {/* pattern */}
-                            <label for="sendersPostCode">Post Code</label>
-                            <input id="sendersPostCode" name="sendersPostCode" type="text" />
-                        </p>
-                        <p>
-                            <label for="sendersCountry">Country</label>
-                            <input id="sendersCountry" name="sendersCountry" type="text" />
-                        </p>
+                        <Input
+                            id="sendersCity"
+                            name="city"
+                            label="City"
+                            type="text"
+                            state={invoice}
+                            setState={setInvoice}
+                            objectInStateName="senderAddress"
+                        />
+                        {/* pattern */}
+                        <Input
+                            id="sendersPostCode"
+                            name="postCode"
+                            label="Post Code"
+                            type="text"
+                            state={invoice}
+                            setState={setInvoice}
+                            objectInStateName="senderAddress"
+                        />
+                        <Input
+                            id="sendersCountry"
+                            name="country"
+                            label="Country"
+                            type="text"
+                            state={invoice}
+                            setState={setInvoice}
+                            objectInStateName="senderAddress"
+                        />
                     </div>
                 </fieldset>
 
                 <fieldset>
                     <legend>Bill To</legend>
-                    <p>
-                        <label for="clientsName">Client's Name</label>
-                        <input id="clientsName" name="clientsName" type="text" />
-                    </p>
-                    <p>
-                        <label for="clientsEmail">Client's Email</label>
-                        <input id="clientsEmail" name="clientsEmail" type="email" />
-                    </p>
-                    <p>
-                        <label for="clientsStreetAdress">Street Adress</label>
-                        <input id="clientsStreetAdress" name="clientsStreetAdress" type="text" />
-                    </p>
+                    <Input
+                        id="clientsName"
+                        name="clientName"
+                        label="Client's Name"
+                        type="text"
+                        state={invoice}
+                        setState={setInvoice}
+                    />
+                    <Input
+                        id="clientsEmail"
+                        name="clientEmail"
+                        label="Client's Email"
+                        type="email"
+                        state={invoice}
+                        setState={setInvoice}
+                    />
+                    <Input
+                        id="clientsStreetAdress"
+                        name="street"
+                        label="Street Adress"
+                        type="text"
+                        state={invoice}
+                        setState={setInvoice}
+                        objectInStateName="clientAddress"
+                    />
                     <div>
-                        <p>
-                            <label for="clientsCity">City</label>
-                            <input id="clientsCity" name="clientsCity" type="text" />
-                        </p>
-                        <p>
-                            {/* pattern */}
-                            <label for="clientsPostCode">Post Code</label>
-                            <input id="clientsPostCode" name="clientsPostCode" type="text" />
-                        </p>
-                        <p>
-                            <label for="clientsCountry">Country</label>
-                            <input id="clientsCountry" name="clientsCountry" type="text" />
-                        </p>
+                        <Input
+                            id="clientsCity"
+                            name="city"
+                            label="City"
+                            type="text"
+                            state={invoice}
+                            setState={setInvoice}
+                            objectInStateName="clientAddress"
+                        />
+                        {/* pattern */}
+                        <Input
+                            id="clientsPostCode"
+                            name="postCode"
+                            label="Post Code"
+                            type="text"
+                            state={invoice}
+                            setState={setInvoice}
+                            objectInStateName="clientAddress"
+                        />
+                        <Input
+                            id="clientsCountry"
+                            name="country"
+                            label="Country"
+                            type="text"
+                            state={invoice}
+                            setState={setInvoice}
+                            objectInStateName="clientAddress"
+                        />
                     </div>
                 </fieldset>
 
                 <div>
-                    <p>
-                        <label for="invoiceDate">Invoice Date</label>
-                        <input id="invoiceDate" name="invoiceDate" type="date" />
-                    </p>
-                    <p>
-                        <label for="paymentTerms">Payment Terms</label>
-                        <select id="paymentTerms" name="paymentTerms">
-                            <option>Net 1 day</option>
-                            <option>Net 7 days</option>
-                            <option>Net 14 days</option>
-                            <option>Net 30 days</option>
-                        </select>
-                    </p>
+                    {/* change date format */}
+                    <Input
+                        id="invoiceDate"
+                        name="createdAt"
+                        label="Invoice Date"
+                        type="date"
+                        state={invoice}
+                        setState={setInvoice}
+                    />
+                    <Input
+                        id="paymentTerms"
+                        name="paymentTerms"
+                        label="Payment Terms"
+                        type="select"
+                        state={invoice}
+                        setState={setInvoice}
+                    />
                 </div>
-                <p>
-                    <label for="projectDescription">Project Description</label>
-                    <input id="projectDescription" name="projectDescription" type="text" />
-                </p>
+                <Input
+                    id="projectDescription"
+                    name="description"
+                    label="Project Description"
+                    type="text"
+                    state={invoice}
+                    setState={setInvoice}
+                />
             </section>
 
-            <section>
-                <h3>Item List</h3>
-                <ul>
-                    <li>
-                        <span>Item Name</span>
-                        <span>Qty.</span>
-                        <span>Price</span>
-                        <span>Total</span>
-                    </li>
-                    {/* generate elements */}
-                </ul>
-                {/* should be full width */}
-                <Button content={"+ Add New Item"} />
-            </section>
+            <ItemList invoice={invoice} setInvoice={setInvoice} />
 
             <section>
                 {/* visible only in invoice creator*/}
