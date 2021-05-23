@@ -7,7 +7,7 @@ export const Input = ({ name, type, indexRender, itemRender, invoice, setInvoice
             if (index === indexRender) {
                 return {
                     ...item,
-                    [target.name]: target.value
+                    [target.name]: type === "number" ? +target.value : target.value
                 }
             }
             return { ...item }
@@ -18,7 +18,7 @@ export const Input = ({ name, type, indexRender, itemRender, invoice, setInvoice
         <input
             name={name}
             type={type}
-            value={itemRender.name}
+            value={itemRender[name]}
             onChange={onInputChange}
         />
     )
