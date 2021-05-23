@@ -152,10 +152,10 @@ export const Form = () => {
                         setState={setInvoice}
                     />
                     <Input
+                        htmlEl="select"
                         id="paymentTerms"
                         name="paymentTerms"
                         label="Payment Terms"
-                        type="select"
                         state={invoice}
                         setState={setInvoice}
                     />

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Input = ({ id, name, label, type, state, setState, objectInStateName }) => {
+export const Input = ({ htmlEl, id, name, label, type, state, setState, objectInStateName }) => {
 
     const getInputValue = () => {
 
@@ -28,7 +28,7 @@ export const Input = ({ id, name, label, type, state, setState, objectInStateNam
         })
     };
 
-    if (type === "select") {
+    if (htmlEl === "select") {
         return (
             <p>
                 <label htmlFor={id}>Payment Terms</label>
