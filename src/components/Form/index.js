@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button } from "../Button";
-import { Input } from "../Input";
+import { Input } from "./Input";
 import { StyledForm } from "./styled";
-import { ItemList } from "../ItemList";
+import { ItemList } from "./ItemList";
 
 export const Form = () => {
     const initialState = {
