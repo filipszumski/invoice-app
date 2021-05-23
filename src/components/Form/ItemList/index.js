@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../../Button";
+import { Input } from "./Input";
 
 export const ItemList = ({ invoice, setInvoice }) => {
     const onAddItemListButtonChange = () => setInvoice({
@@ -27,76 +28,40 @@ export const ItemList = ({ invoice, setInvoice }) => {
                 </li>
                 {/* generate elements */}
             </ul>
-            {invoice.items.length > 0 && invoice.items.map((item, indexRender) => {
+            {invoice.items.length > 0 && invoice.items.map((item, index) => {
                 return (
-                    <li key={indexRender}>
-                        <input
+                    <li key={index}>
+                        <Input
                             name="name"
                             type="text"
-                            value={item.name}
-                            onChange={({ target }) => setInvoice({
-                                ...invoice,
-                                items: invoice.items.map((item, index) => {
-                                    if (index === indexRender) {
-                                        return {
-                                            ...item,
-                                            [target.name]: target.value
-                                        }
-                                    }
-                                    return { ...item }
-                                })
-                            })}
+                            indexRender={index}
+                            itemRender={item}
+                            invoice={invoice}
+                            setInvoice={setInvoice}
                         />
-                        <input
+                        <Input
                             name="quantity"
                             type="number"
-                            value={item.quantity}
-                            onChange={({ target }) => setInvoice({
-                                ...invoice,
-                                items: invoice.items.map((item, index) => {
-                                    if (index === indexRender) {
-                                        return {
-                                            ...item,
-                                            [target.name]: +target.value
-                                        }
-                                    }
-                                    return { ...item }
-                                })
-                            })}
+                            indexRender={index}
+                            itemRender={item}
+                            invoice={invoice}
+                            setInvoice={setInvoice}
                         />
-                        <input
+                        <Input
                             name="price"
                             type="number"
-                            value={item.price}
-                            onChange={({ target }) => setInvoice({
-                                ...invoice,
-                                items: invoice.items.map((item, index) => {
-                                    if (index === indexRender) {
-                                        return {
-                                            ...item,
-                                            [target.name]: +target.value
-                                        }
-                                    }
-                                    return { ...item }
-                                })
-                            })}
+                            indexRender={index}
+                            itemRender={item}
+                            invoice={invoice}
+                            setInvoice={setInvoice}
                         />
-                        <input
+                        <Input
                             name="total"
                             type="number"
-                            value={item.total}
-                            onChange={({ target }) => setInvoice({
-                                ...invoice,
-                                items: invoice.items.map((item, index) => {
-                                    if (index === indexRender) {
-                                        return {
-                                            ...item,
-                                            [target.name]: +target.value
-                                        }
-                                    }
-                                    return { ...item }
-                                })
-                            })}
+                            indexRender={index}
+                            itemRender={item}
+                            invoice={invoice}
+                            setInvoice={setInvoice}
                         />
                     </li>
                 )
