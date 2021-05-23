@@ -1,8 +1,13 @@
 import React from "react";
 
-export const Button = ({ content, extraContent }) => {
+export const Button = ({ content, extraContent, onClick, type }) => {
 
     return (
-        <button>{extraContent ? extraContent : ""} {content}</button>
+        <button
+            onClick={onClick}
+            type={type}
+        >
+            {extraContent ? extraContent : ""} {content}
+        </button>
     )
 }
