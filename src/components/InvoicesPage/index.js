@@ -14,19 +14,19 @@ export const InvoicesPage = () => {
                 <div>
                     <div>
                         <select>
-                            <option selected disabled hidden>Filter by status</option>
+                            <option disabled hidden>Filter by status</option>
                         </select>
                         <div>
                             <p>
-                                <label for="draft">Draft</label>
+                                <label htmlFor="draft">Draft</label>
                                 <input id="draft" type="checkbox" name="draft" />
                             </p>
                             <p>
-                                <label for="prending">Pending</label>
+                                <label htmlFor="prending">Pending</label>
                                 <input id="prending" type="checkbox" name="prending" />
                             </p>
                             <p>
-                                <label for="paid">Paid</label>
+                                <label htmlFor="paid">Paid</label>
                                 <input id="paid" type="checkbox" name="paid" />
                             </p>
                         </div>
