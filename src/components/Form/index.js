@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
+import addDays from 'date-fns/addDays'
 import { Button } from "../Button";
 import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
 import { useSetInitialID } from "./useSetInitialID";
+
 
 export const Form = () => {
     const [invoice, setInvoice] = useState(initialState);
@@ -14,6 +17,24 @@ export const Form = () => {
     // STATUS
     // TOTAL
     // PAYMENTDUE
+
+    useEffect(() => {
+        console.log("TRIED TO SET PAYMENT DUE");
+        const createdAtDateArray = invoice.createdAt.split("-");
+        const paymentDueDate = addDays(new Date(parseInt(createdAtDateArray[0], 10), parseInt(createdAtDateArray[1] - 1, 10), parseInt(createdAtDateArray[2], 10)), invoice.paymentTerms);
+
+        setInvoice(invoice => {
+            if (invoice.createdAt === "") {
+                return {
+                    ...invoice
+                }
+            }
+            return {
+                ...invoice,
+                paymentDue: format(paymentDueDate, "yyyy-MM-dd")
+            }
+        })
+    }, [invoice.createdAt, invoice.paymentTerms]);
 
     return (
         // {/* <!-- Create new invoice form --> */ }
