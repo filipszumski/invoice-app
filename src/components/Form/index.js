@@ -3,40 +3,16 @@ import { Button } from "../Button";
 import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
+import { initialState } from "./initialState";
 
 export const Form = () => {
-    const initialState = {
-        id: "",
-        createdAt: "",
-        paymentDue: "",
-        description: "",
-        paymentTerms: 1,
-        clientName: "",
-        clientEmail: "",
-        status: "",
-        senderAddress: {
-            street: "",
-            city: "",
-            postCode: "",
-            country: ""
-        },
-        clientAddress: {
-            street: "",
-            city: "",
-            postCode: "",
-            country: ""
-        },
-        items: [],
-        total: 556.00,
-    };
-
     const [invoice, setInvoice] = useState(initialState)
     console.log(invoice);
 
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
-        <StyledForm active={true}>
+        <StyledForm active={false}>
             <h2>New Invoice</h2>
             <section>
                 <fieldset>
