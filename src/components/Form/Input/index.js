@@ -17,13 +17,13 @@ export const Input = ({ htmlEl, id, name, label, type, state, setState, objectIn
                     ...state,
                     [objectInStateName]: {
                         ...state[objectInStateName],
-                        [target.name]: target.value
+                        [target.name]: type === "number" ? +target.value : target.value
                     }
                 }
             }
             return {
                 ...state,
-                [target.name]: target.value
+                [target.name]: type === "number" ? +target.value : target.value
             }
         })
     };
