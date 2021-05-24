@@ -4,15 +4,21 @@ import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
+import { useSetInitialID } from "./useSetInitialID";
 
 export const Form = () => {
-    const [invoice, setInvoice] = useState(initialState)
+    const [invoice, setInvoice] = useState(initialState);
+    useSetInitialID(invoice, setInvoice);
     console.log(invoice);
+
+    // STATUS
+    // TOTAL
+    // PAYMENTDUE
 
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
-        <StyledForm active={false}>
+        <StyledForm active={true}>
             <h2>New Invoice</h2>
             <section>
                 <fieldset>
@@ -132,6 +138,7 @@ export const Form = () => {
                         id="paymentTerms"
                         name="paymentTerms"
                         label="Payment Terms"
+                        type="number"
                         state={invoice}
                         setState={setInvoice}
                     />
