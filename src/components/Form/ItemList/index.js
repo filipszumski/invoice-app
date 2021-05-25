@@ -27,45 +27,45 @@ export const ItemList = ({ invoice, setInvoice }) => {
                     <span>Total</span>
                 </li>
                 {/* generate elements */}
+                {invoice.items.length > 0 && invoice.items.map((item, index) => {
+                    return (
+                        <li key={index}>
+                            <Input
+                                name="name"
+                                type="text"
+                                indexRender={index}
+                                itemRender={item}
+                                invoice={invoice}
+                                setInvoice={setInvoice}
+                            />
+                            <Input
+                                name="quantity"
+                                type="number"
+                                indexRender={index}
+                                itemRender={item}
+                                invoice={invoice}
+                                setInvoice={setInvoice}
+                            />
+                            <Input
+                                name="price"
+                                type="number"
+                                indexRender={index}
+                                itemRender={item}
+                                invoice={invoice}
+                                setInvoice={setInvoice}
+                            />
+                            <Input
+                                name="total"
+                                type="number"
+                                indexRender={index}
+                                itemRender={item}
+                                invoice={invoice}
+                                setInvoice={setInvoice}
+                            />
+                        </li>
+                    )
+                })}
             </ul>
-            {invoice.items.length > 0 && invoice.items.map((item, index) => {
-                return (
-                    <li key={index}>
-                        <Input
-                            name="name"
-                            type="text"
-                            indexRender={index}
-                            itemRender={item}
-                            invoice={invoice}
-                            setInvoice={setInvoice}
-                        />
-                        <Input
-                            name="quantity"
-                            type="number"
-                            indexRender={index}
-                            itemRender={item}
-                            invoice={invoice}
-                            setInvoice={setInvoice}
-                        />
-                        <Input
-                            name="price"
-                            type="number"
-                            indexRender={index}
-                            itemRender={item}
-                            invoice={invoice}
-                            setInvoice={setInvoice}
-                        />
-                        <Input
-                            name="total"
-                            type="number"
-                            indexRender={index}
-                            itemRender={item}
-                            invoice={invoice}
-                            setInvoice={setInvoice}
-                        />
-                    </li>
-                )
-            })}
             {/* should be full width */}
             <Button
                 onClick={onAddItemListButtonChange}
