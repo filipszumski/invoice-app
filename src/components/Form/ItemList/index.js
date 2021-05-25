@@ -33,32 +33,32 @@ export const ItemList = ({ invoice, setInvoice }) => {
                             <Input
                                 name="name"
                                 type="text"
-                                indexRender={index}
-                                itemRender={item}
+                                liIndex={index}
+                                liItem={item}
                                 invoice={invoice}
                                 setInvoice={setInvoice}
                             />
                             <Input
                                 name="quantity"
                                 type="number"
-                                indexRender={index}
-                                itemRender={item}
+                                liIndex={index}
+                                liItem={item}
                                 invoice={invoice}
                                 setInvoice={setInvoice}
                             />
                             <Input
                                 name="price"
                                 type="number"
-                                indexRender={index}
-                                itemRender={item}
+                                liIndex={index}
+                                liItem={item}
                                 invoice={invoice}
                                 setInvoice={setInvoice}
                             />
                             <Input
                                 name="total"
                                 type="number"
-                                indexRender={index}
-                                itemRender={item}
+                                liIndex={index}
+                                liItem={item}
                                 invoice={invoice}
                                 setInvoice={setInvoice}
                             />

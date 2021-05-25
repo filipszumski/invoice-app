@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Input = ({ name, type, indexRender, itemRender, invoice, setInvoice }) => {
+export const Input = ({ name, type, liIndex, liItem, invoice, setInvoice }) => {
     const onInputChange = ({ target }) => setInvoice({
         ...invoice,
         items: invoice.items.map((item, index) => {
-            if (index === indexRender) {
+            if (index === liIndex) {
                 return {
                     ...item,
                     [target.name]: type === "number" ? +target.value : target.value
@@ -18,7 +18,7 @@ export const Input = ({ name, type, indexRender, itemRender, invoice, setInvoice
         <input
             name={name}
             type={type}
-            value={itemRender[name]}
+            value={liItem[name]}
             onChange={onInputChange}
         />
     )
