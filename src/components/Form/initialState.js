@@ -20,5 +20,5 @@ export const initialState = {
         country: ""
     },
     items: [],
-    total: 556.00,
+    total: "",
 };
