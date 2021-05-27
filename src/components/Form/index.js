@@ -14,8 +14,8 @@ export const Form = () => {
     useSetPaymentDue(invoice, setInvoice);
     console.log(invoice);
 
-    // STATUS
-    // TOTAL
+    const onDraftButtonClick = () => setInvoice({ ...invoice, status: "draft" });
+    const onSendButtonClick = () => setInvoice({ ...invoice, status: "pending" })
 
     return (
         // {/* <!-- Create new invoice form --> */ }
@@ -161,8 +161,8 @@ export const Form = () => {
                 {/* visible only in invoice creator*/}
                 <Button content={"Discard"} />
                 <div>
-                    <Button content={"Save as Draft"} />
-                    <Button content={"Save & Send"} />
+                    <Button type="button" onClick={onDraftButtonClick} content={"Save as Draft"} />
+                    <Button type="button" onClick={onSendButtonClick} content={"Save & Send"} />
                 </div>
             </section>
         </StyledForm>
