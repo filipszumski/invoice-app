@@ -41,6 +41,11 @@ export const ItemList = ({ invoice, setInvoice }) => {
         }))
     }, [effectLauncher, setInvoice]);
 
+    const deleteListItem = (index) => setInvoice({
+        ...invoice,
+        items: invoice.items.filter((item, itemIndex) => index !== itemIndex)
+    });
+
     return (
         <section>
             <h3>Item List</h3>
@@ -83,6 +88,7 @@ export const ItemList = ({ invoice, setInvoice }) => {
                                 setEffectLauncher={setEffectLauncher}
                             />
                             <span>{invoice.items[index].total || ""}</span>
+                            <Button type="button" content="delete item" onClick={() => deleteListItem(index)} />
                         </li>
                     )
                 })}
