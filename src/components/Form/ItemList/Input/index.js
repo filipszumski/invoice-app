@@ -1,18 +1,27 @@
 import React from "react";
 
-export const Input = ({ name, type, liIndex, liItem, invoice, setInvoice }) => {
-    const onInputChange = ({ target }) => setInvoice({
-        ...invoice,
-        items: invoice.items.map((item, index) => {
-            if (index === liIndex) {
-                return {
-                    ...item,
-                    [target.name]: type === "number" ? +target.value : target.value
+export const Input = ({ name, type, liIndex, liItem, invoice, setInvoice, setEffectLauncher }) => {
+    const onInputChange = ({ target }) => {
+        setInvoice({
+            ...invoice,
+            items: invoice.items.map((item, index) => {
+                if (index === liIndex) {
+                    return {
+                        ...item,
+                        [target.name]: (type === "number" ? +target.value : target.value) || ""
+                    }
                 }
-            }
-            return { ...item }
+                return { ...item }
+            })
         })
-    })
+
+        if (type === "number") {
+            setEffectLauncher({
+                number: Math.random(),
+                index: liIndex,
+            });
+        }
+    };
 
     return (
         <input
