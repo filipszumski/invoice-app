@@ -1,21 +1,68 @@
 import React, { useState } from "react";
+import { format } from "date-fns";
+import addDays from 'date-fns/addDays'
 import { Button } from "../Button";
 import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
-import { useSetInitialID } from "./useSetInitialID";
-import { useSetPaymentDue } from "./useSetPaymentDue";
-
 
 export const Form = () => {
     const [invoice, setInvoice] = useState(initialState);
-    useSetInitialID(invoice, setInvoice);
-    useSetPaymentDue(invoice, setInvoice);
+    // useSetInitialID(invoice, setInvoice);
+    // useSetPaymentDue(invoice, setInvoice);
     console.log(invoice);
 
-    const onDraftButtonClick = () => setInvoice({ ...invoice, status: "draft" });
-    const onSendButtonClick = () => setInvoice({ ...invoice, status: "pending" })
+    const updateItemsTotalValue = () => {
+        let sum = 0;
+        const itemTotalValueArray = invoice.items.map(item => item.total);
+
+        for (let i = 0; i < invoice.items.length; i++) {
+            sum += itemTotalValueArray[i];
+        }
+
+        return sum;
+    };
+
+    const setPaymentDue = () => {
+        const createdAtDateArray = invoice.createdAt.split("-");
+        const paymentDueDate = addDays(new Date(parseInt(createdAtDateArray[0], 10), parseInt(createdAtDateArray[1] - 1, 10), parseInt(createdAtDateArray[2], 10)), invoice.paymentTerms);
+
+        if (!invoice.createdAt) {
+            return ""
+        }
+
+        return format(paymentDueDate, "yyyy-MM-dd");
+    };
+
+    const setInvoiceID = () => {
+        const getRandomNumber = () => {
+            const randomNumber = Math.floor(Math.random() * 10);
+            return randomNumber.toString();
+        };
+
+        const getRandomLetter = () => {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return alphabet[Math.floor(Math.random() * alphabet.length)];
+        };
+
+        return `${getRandomLetter()}${getRandomLetter()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}`
+    }
+
+    const onDraftButtonClick = () => setInvoice({
+        ...invoice,
+        id: setInvoiceID(),
+        status: "draft",
+        total: updateItemsTotalValue(),
+        paymentDue: setPaymentDue() || "",
+    });
+    const onSendButtonClick = () => setInvoice({
+        ...invoice,
+        id: setInvoiceID(),
+        status: "pending",
+        total: updateItemsTotalValue(),
+        paymentDue: setPaymentDue() || "",
+    })
 
     return (
         // {/* <!-- Create new invoice form --> */ }
