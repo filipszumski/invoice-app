@@ -1,5 +1,11 @@
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import initialStore from "./initialStore";
+import { status } from "./status/status";
+import { invoices } from "./invoices/invoices";
 
-export default createStore(() => initialStore, composeWithDevTools());
+const rootReducer = combineReducers({
+    status,
+    invoices,
+})
+
+export default createStore(rootReducer, composeWithDevTools());
