@@ -1,5 +1,5 @@
 export default {
-    state: {
+    status: {
         loading: false,
         error: false,
         overlayActive: false,
