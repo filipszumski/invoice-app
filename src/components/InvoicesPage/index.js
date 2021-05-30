@@ -5,11 +5,14 @@ import { Button } from "../Button";
 
 export const InvoicesPage = () => {
     const status = useSelector((state) => state.status);
+    const invoices = useSelector(state => state.invoices);
     const dispatch = useDispatch();
+
+    console.log(invoices);
     console.log(status);
 
     const onNewInvoiceButtonClick = () => {
-        dispatch(displayForm(true))
+        dispatch(displayForm(true));
     }
 
     return (
@@ -47,8 +50,26 @@ export const InvoicesPage = () => {
 
             {/*   No invoices  */}
             <section>
-                <h2>There is nothing here</h2>
-                <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
+                {status.status === "loading"
+                    ? <p>Loading in progress...</p>
+                    : status.status === "error"
+                        ? <p>Error occurred</p>
+                        : (
+                            invoices.length === 0
+                                ? <>
+                                    <h2>There is nothing here</h2>
+                                    <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
+                                </>
+                                : invoices.map((invoice) => (
+                                    <p key={invoice.id}>
+                                        <span>{invoice.id}</span>{ }
+                                        <span>{invoice.paymentDue}</span>
+                                        <span>{invoice.clientName}</span>
+                                        <span>{invoice.total}</span>
+                                        <span>{invoice.status}</span>
+                                    </p>
+                                ))
+                        )}
             </section>
             {/* <!-- No invoices end --> */}
             {/* or invoices List */}
