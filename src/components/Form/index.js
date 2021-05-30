@@ -6,9 +6,13 @@ import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
+import { useDispatch, useSelector } from "react-redux";
+import { displayForm } from "../../store/status/status";
 
 export const Form = () => {
     const [invoice, setInvoice] = useState(initialState);
+    const status = useSelector(state => state.status);
+    const dispatch = useDispatch();
     // useSetInitialID(invoice, setInvoice);
     // useSetPaymentDue(invoice, setInvoice);
     console.log(invoice);
@@ -47,27 +51,37 @@ export const Form = () => {
         };
 
         return `${getRandomLetter()}${getRandomLetter()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}`
-    }
+    };
 
-    const onDraftButtonClick = () => setInvoice({
-        ...invoice,
-        id: setInvoiceID(),
-        status: "draft",
-        total: updateItemsTotalValue(),
-        paymentDue: setPaymentDue() || "",
-    });
-    const onSendButtonClick = () => setInvoice({
-        ...invoice,
-        id: setInvoiceID(),
-        status: "pending",
-        total: updateItemsTotalValue(),
-        paymentDue: setPaymentDue() || "",
-    })
+    const onDraftButtonClick = () => {
+        setInvoice({
+            ...invoice,
+            id: setInvoiceID(),
+            status: "draft",
+            total: updateItemsTotalValue(),
+            paymentDue: setPaymentDue() || "",
+        });
+        dispatch(displayForm(false));
+    };
+    const onSendButtonClick = () => {
+        setInvoice({
+            ...invoice,
+            id: setInvoiceID(),
+            status: "pending",
+            total: updateItemsTotalValue(),
+            paymentDue: setPaymentDue() || "",
+        });
+        dispatch(displayForm(false));
+    };
+
+    const onDiscardButtonClick = () => {
+        dispatch(displayForm(false));
+    }
 
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
-        <StyledForm active={true}>
+        <StyledForm active={status.formActive}>
             <h2>New Invoice</h2>
             <section>
                 <fieldset>
@@ -206,7 +220,7 @@ export const Form = () => {
 
             <section>
                 {/* visible only in invoice creator*/}
-                <Button content={"Discard"} />
+                <Button onClick={onDiscardButtonClick} type="button" content={"Discard"} />
                 <div>
                     <Button type="button" onClick={onDraftButtonClick} content={"Save as Draft"} />
                     <Button type="button" onClick={onSendButtonClick} content={"Save & Send"} />

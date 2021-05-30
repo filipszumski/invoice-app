@@ -1,7 +1,16 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { displayForm } from "../../store/status/status";
 import { Button } from "../Button";
 
 export const InvoicesPage = () => {
+    const status = useSelector((state) => state.status);
+    const dispatch = useDispatch();
+    console.log(status);
+
+    const onNewInvoiceButtonClick = () => {
+        dispatch(displayForm(true))
+    }
 
     return (
         <main>
@@ -32,7 +41,7 @@ export const InvoicesPage = () => {
                         </div>
                     </div>
                     {/* add + image */}
-                    <Button content="New Invoice" extraContent="+" />
+                    <Button onClick={onNewInvoiceButtonClick} content="New Invoice" extraContent="+" />
                 </div>
             </header>
 

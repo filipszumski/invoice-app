@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { InvoicesPage } from "./components/InvoicesPage";
 import { Form } from "./components/Form";
 import { InvoicePage } from "./components/InvoicePage";
@@ -11,6 +11,7 @@ import { getInvoicesStatusError, getInvoicesStatusSuccess } from "./store/status
 
 function App() {
   const dispatch = useDispatch();
+  const status = useSelector(state => state.status);
   const timeoutId = useRef(null);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ function App() {
 
   return (
     <>
-      <Overlay active={false} />
+      <Overlay active={status.overlayActive} />
       <InvoicesPage />
       <Form />
       <InvoicePage />
