@@ -13,8 +13,6 @@ export const Form = () => {
     const [invoice, setInvoice] = useState(initialState);
     const status = useSelector(state => state.status);
     const dispatch = useDispatch();
-    // useSetInitialID(invoice, setInvoice);
-    // useSetPaymentDue(invoice, setInvoice);
     console.log(invoice);
 
     const updateItemsTotalValue = () => {
