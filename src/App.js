@@ -21,11 +21,11 @@ function App() {
       <DeleteInvoiceWindow />
 
       <Switch>
-        <Route path={toInvoices()}>
-          <InvoicesPage />
-        </Route>
         <Route path={toInvoice()}>
           <InvoicePage />
+        </Route>
+        <Route path={toInvoices()}>
+          <InvoicesPage />
         </Route>
         <Route path="/">
           <Redirect to={toInvoices()} />
