@@ -1,7 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { displayForm } from "../../store/status/status";
 import { Button } from "../Button";
+import { toInvoice } from "../../routes"
 
 export const InvoicesPage = () => {
     const status = useSelector((state) => state.status);
@@ -61,13 +63,15 @@ export const InvoicesPage = () => {
                                     <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
                                 </>
                                 : invoices.map((invoice) => (
-                                    <p key={invoice.id}>
-                                        <span>{invoice.id}</span>{ }
-                                        <span>{invoice.paymentDue}</span>
-                                        <span>{invoice.clientName}</span>
-                                        <span>{invoice.total}</span>
-                                        <span>{invoice.status}</span>
-                                    </p>
+                                    <Link key={invoice.id} to={toInvoice(invoice.id)}>
+                                        <p key={invoice.id}>
+                                            <span>{invoice.id}</span>{ }
+                                            <span>{invoice.paymentDue}</span>
+                                            <span>{invoice.clientName}</span>
+                                            <span>{invoice.total}</span>
+                                            <span>{invoice.status}</span>
+                                        </p>
+                                    </Link>
                                 ))
                         )}
             </section>
