@@ -1,16 +1,10 @@
-const GET_INVOICE_STATUS_SUCCESS = "GET_INVOICE_STATUS_SUCCESS";
-const GET_INVOICE_STATUS_ERROR = "GET_INVOICE_STATUS_ERROR";
+const SET_STATUS = "SET_STATUS";
 const DISPLAY_FORM = "DISPLAY_FORM";
 
-export const getInvoicesStatusSuccess = () => {
+export const setStatus = (payload) => {
     return {
-        type: GET_INVOICE_STATUS_SUCCESS,
-    }
-};
-
-export const getInvoicesStatusError = () => {
-    return {
-        type: GET_INVOICE_STATUS_ERROR,
+        type: SET_STATUS,
+        payload: payload
     }
 };
 
@@ -31,15 +25,10 @@ const initialStatus = {
 
 export const status = (state = initialStatus, action) => {
     switch (action.type) {
-        case GET_INVOICE_STATUS_SUCCESS:
+        case SET_STATUS:
             return {
                 ...state,
-                status: "success"
-            };
-        case GET_INVOICE_STATUS_ERROR:
-            return {
-                ...state,
-                status: "error"
+                status: action.payload,
             };
         case DISPLAY_FORM:
             return {
