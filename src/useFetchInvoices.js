@@ -1,28 +1,36 @@
 import { useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getInvoices } from "./services/invoices";
 import { getInvoicesDataSuccess } from "./store/invoices/invoices";
-import { getInvoicesStatusError, getInvoicesStatusSuccess } from "./store/status/status";
+import { setStatus } from "./store/status/status";
 
 export const useFetchInvoices = () => {
     const timeoutId = useRef(null);
+    const status = useSelector(state => state.status);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        console.log("Fetch Invoices Effect");
         const fetchData = async () => {
             try {
                 const response = await getInvoices();
                 dispatch(getInvoicesDataSuccess(response))
-                dispatch(getInvoicesStatusSuccess());
+                dispatch(setStatus("success"));
             }
             catch (error) {
                 console.error(error);
-                dispatch(getInvoicesStatusError())
+                dispatch(setStatus("error"))
             }
         };
 
+        if (status.status !== "loading") {
+            console.log("Fectch Invoice Effect Return");
+            return;
+        }
+
         timeoutId.current = setTimeout(fetchData, 1000);
+        console.log("Fectch Invoice Effect DONE");
 
         return () => clearTimeout(timeoutId.current);
-    }, [])
+    }, [status.status])
 };
