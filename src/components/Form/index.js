@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import addDays from 'date-fns/addDays'
 import { Button } from "../Button";
@@ -7,13 +7,33 @@ import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
 import { useDispatch, useSelector } from "react-redux";
-import { displayForm } from "../../store/status/status";
+import { displayForm, setStatus } from "../../store/status/status";
+import { postInvoice } from "../../services/invoices";
 
 export const Form = () => {
     const [invoice, setInvoice] = useState(initialState);
     const status = useSelector(state => state.status);
     const dispatch = useDispatch();
     console.log(invoice);
+
+    useEffect(() => {
+
+        if (!invoice.id) {
+            return;
+        };
+
+        (async () => {
+            try {
+                console.log("form send effect");
+                await postInvoice(invoice);
+                dispatch(setStatus("loading"));
+
+            } catch (error) {
+                console.error(error);
+                dispatch(setStatus("error"));
+            }
+        })();
+    }, [invoice.id])
 
     const updateItemsTotalValue = () => {
         let sum = 0;
@@ -51,30 +71,18 @@ export const Form = () => {
         return `${getRandomLetter()}${getRandomLetter()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}`
     };
 
-    const onDraftButtonClick = () => {
-        setInvoice({
-            ...invoice,
-            id: setInvoiceID(),
-            status: "draft",
-            total: updateItemsTotalValue(),
-            paymentDue: setPaymentDue() || "",
-        });
+    const onSubmitButtonClick = (status) => {
+        if (status) {
+            setInvoice({
+                ...invoice,
+                id: setInvoiceID(),
+                status: status,
+                total: updateItemsTotalValue(),
+                paymentDue: setPaymentDue() || "",
+            });
+        }
         dispatch(displayForm(false));
     };
-    const onSendButtonClick = () => {
-        setInvoice({
-            ...invoice,
-            id: setInvoiceID(),
-            status: "pending",
-            total: updateItemsTotalValue(),
-            paymentDue: setPaymentDue() || "",
-        });
-        dispatch(displayForm(false));
-    };
-
-    const onDiscardButtonClick = () => {
-        dispatch(displayForm(false));
-    }
 
     return (
         // {/* <!-- Create new invoice form --> */ }
@@ -218,10 +226,10 @@ export const Form = () => {
 
             <section>
                 {/* visible only in invoice creator*/}
-                <Button onClick={onDiscardButtonClick} type="button" content={"Discard"} />
+                <Button onClick={() => onSubmitButtonClick()} type="button" content={"Discard"} />
                 <div>
-                    <Button type="button" onClick={onDraftButtonClick} content={"Save as Draft"} />
-                    <Button type="button" onClick={onSendButtonClick} content={"Save & Send"} />
+                    <Button type="button" onClick={() => onSubmitButtonClick("draft")} content={"Save as Draft"} />
+                    <Button type="button" onClick={() => onSubmitButtonClick("pending")} content={"Save & Send"} />
                 </div>
             </section>
         </StyledForm>
