@@ -1,27 +1,27 @@
 import React from "react";
 
-export const Input = ({ name, type, liIndex, liItem, invoice, setInvoice, setEffectLauncher }) => {
+export const Input = ({ name, type, liIndex, liItem, dispatch, blur }) => {
     const onInputChange = ({ target }) => {
-        setInvoice({
-            ...invoice,
-            items: invoice.items.map((item, index) => {
-                if (index === liIndex) {
-                    return {
-                        ...item,
-                        [target.name]: (type === "number" ? +target.value : target.value) || ""
-                    }
-                }
-                return { ...item }
-            })
-        })
 
-        if (type === "number") {
-            setEffectLauncher({
-                number: Math.random(),
-                index: liIndex,
-            });
-        }
+        dispatch({
+            type: "updateListItemObjectKey", payload: {
+                target: target,
+                index: liIndex
+            }
+        })
     };
+
+    const onInputBlur = ({ target }) => {
+        if (!blur) {
+            return;
+        }
+        dispatch({
+            type: "updateListItemObjectKeyOnInputBlur", payload: {
+                target: target,
+                index: liIndex
+            }
+        })
+    }
 
     return (
         <input
@@ -29,6 +29,7 @@ export const Input = ({ name, type, liIndex, liItem, invoice, setInvoice, setEff
             type={type}
             value={liItem[name]}
             onChange={onInputChange}
+            onBlur={onInputBlur}
         />
     )
 }
