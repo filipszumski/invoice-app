@@ -1,5 +1,6 @@
 const SET_STATUS = "SET_STATUS";
 const DISPLAY_FORM = "DISPLAY_FORM";
+const DISPLAY_ALERT = "DISPLAY_ALERT";
 
 export const setStatus = (payload) => {
     return {
@@ -11,6 +12,13 @@ export const setStatus = (payload) => {
 export const displayForm = (payload) => {
     return {
         type: DISPLAY_FORM,
+        payload: payload
+    }
+};
+
+export const displayDeleteInvoiceAlert = (payload) => {
+    return {
+        type: DISPLAY_ALERT,
         payload: payload
     }
 };
@@ -36,6 +44,12 @@ export const status = (state = initialStatus, action) => {
                 formActive: action.payload,
                 overlayActive: action.payload,
             };
+            case DISPLAY_ALERT:
+                return {
+                    ...state,
+                    deleteInvoiceActive: action.payload,
+                    overlayActive: action.payload,
+                };
         default:
             return state;
     }
