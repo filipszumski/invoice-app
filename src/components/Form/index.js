@@ -1,59 +1,107 @@
-import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
+import React, { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useParams } from "react-router";
+import { format, setISODay } from "date-fns";
 import addDays from 'date-fns/addDays'
 import { Button } from "../Button";
 import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
-import { useDispatch, useSelector } from "react-redux";
 import { displayForm, setStatus } from "../../store/status/status";
-import { postInvoice } from "../../services/invoices";
+import { postInvoice, getInvoice } from "../../services/invoices";
 
-export const Form = () => {
-    const [invoice, setInvoice] = useState(initialState);
+
+export const Form = ({ id }) => {
+    const reducer = (state, { type, payload }) => {
+        switch (type) {
+            case "replaceState":
+                return payload;
+            case "updateStateKey":
+                return {
+                    ...state,
+                    [payload.target.name]: payload.type === "number" ? +payload.target.value : payload.target.value
+                };
+            case "updateStateObjectKey":
+                return {
+                    ...state,
+                    [payload.objectInStateName]: {
+                        ...state[payload.objectInStateName],
+                        [payload.target.name]: payload.target.type === "number" ? +payload.target.value : payload.target.value
+                    }
+                };
+            case "addListItem":
+                return {
+                    ...state,
+                    items: [
+                        ...state.items,
+                        { name: "", quantity: "", price: "", total: "" }
+                    ]
+                };
+            case "deleteListItem":
+                return {
+                    ...state,
+                    items: state.items.filter((item, index) => index !== payload)
+                };
+            case "updateListItemObjectKey":
+                return {
+                    ...state,
+                    items: state.items.map((item, index) => {
+                        if (index === payload.index) {
+                            return {
+                                ...item,
+                                [payload.target.name]: (type === "number" ? +payload.target.value : payload.target.value) || ""
+                            }
+                        }
+                        return { ...item }
+                    })
+                };
+            case "updateListItemObjectKeyOnInputBlur":
+                return {
+                    ...state,
+                    items: state.items.map((item, index) => {
+                        if (index === payload.index) {
+                            return {
+                                ...item,
+                                total: item.quantity * item.price
+                            }
+                        }
+                        return { ...item }
+                    }),
+                };
+            default:
+                return state;
+        }
+    };
+
+    const [invoice, dispatch] = useReducer(reducer, initialState);
     const status = useSelector(state => state.status);
-    const dispatch = useDispatch();
+    const dispatchReduxAction = useDispatch();
     console.log(invoice);
 
     useEffect(() => {
-
-        if (!invoice.id) {
+        if (!id) {
+            console.log("brak id");
             return;
-        };
+        }
 
         (async () => {
             try {
-                console.log("form send effect");
-                await postInvoice(invoice);
-                dispatch(setStatus("loading"));
-
+                const response = await getInvoice(id);
+                dispatch({ type: "replaceState", payload: response })
             } catch (error) {
-                console.error(error);
-                dispatch(setStatus("error"));
+                console.log("Błąd pobierania");
             }
         })();
-    }, [invoice.id])
-
-    const updateItemsTotalValue = () => {
-        let sum = 0;
-        const itemTotalValueArray = invoice.items.map(item => item.total);
-
-        for (let i = 0; i < invoice.items.length; i++) {
-            sum += itemTotalValueArray[i];
-        }
-
-        return sum;
-    };
+    }, []);
 
     const setPaymentDue = () => {
         const createdAtDateArray = invoice.createdAt.split("-");
         const paymentDueDate = addDays(new Date(parseInt(createdAtDateArray[0], 10), parseInt(createdAtDateArray[1] - 1, 10), parseInt(createdAtDateArray[2], 10)), invoice.paymentTerms);
 
         if (!invoice.createdAt) {
-            return ""
+            return "";
         }
-
         return format(paymentDueDate, "yyyy-MM-dd");
     };
 
@@ -71,17 +119,41 @@ export const Form = () => {
         return `${getRandomLetter()}${getRandomLetter()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}`
     };
 
+    const setInvoiceTotal = () => {
+        const itemListTotalArray = invoice.items.map(item => item.total);
+        let sum = 0;
+
+        for (let i = 0; i < itemListTotalArray.length; i++) {
+            sum += itemListTotalArray[i];
+        }
+
+        return sum;
+    };
+
+    console.log(setInvoiceTotal());
+
     const onSubmitButtonClick = (status) => {
         if (status) {
-            setInvoice({
-                ...invoice,
-                id: setInvoiceID(),
-                status: status,
-                total: updateItemsTotalValue(),
-                paymentDue: setPaymentDue() || "",
-            });
-        }
-        dispatch(displayForm(false));
+            (async () => {
+                try {
+                    console.log("form send effect");
+                    await postInvoice({
+                        ...invoice,
+                        status: status,
+                        paymentDue: setPaymentDue(),
+                        id: setInvoiceID(),
+                        total: setInvoiceTotal(),
+                    });
+                    dispatchReduxAction(setStatus("loading"));
+
+                } catch (error) {
+                    console.error(error);
+                    dispatchReduxAction(setStatus("error"));
+                }
+            })();
+        };
+
+        dispatchReduxAction(displayForm(false));
     };
 
     return (
@@ -98,7 +170,7 @@ export const Form = () => {
                         label="Street Address"
                         type="text"
                         state={invoice}
-                        setState={setInvoice}
+                        dispatch={dispatch}
                         objectInStateName="senderAddress"
                     />
                     <div>
@@ -108,8 +180,9 @@ export const Form = () => {
                             label="City"
                             type="text"
                             state={invoice}
-                            setState={setInvoice}
+                            dispatch={dispatch}
                             objectInStateName="senderAddress"
+
                         />
                         {/* pattern */}
                         <Input
@@ -118,8 +191,9 @@ export const Form = () => {
                             label="Post Code"
                             type="text"
                             state={invoice}
-                            setState={setInvoice}
+                            dispatch={dispatch}
                             objectInStateName="senderAddress"
+                            
                         />
                         <Input
                             id="sendersCountry"
@@ -127,8 +201,9 @@ export const Form = () => {
                             label="Country"
                             type="text"
                             state={invoice}
-                            setState={setInvoice}
+                            dispatch={dispatch}
                             objectInStateName="senderAddress"
+                            
                         />
                     </div>
                 </fieldset>
@@ -141,7 +216,7 @@ export const Form = () => {
                         label="Client's Name"
                         type="text"
                         state={invoice}
-                        setState={setInvoice}
+                        dispatch={dispatch}  
                     />
                     <Input
                         id="clientsEmail"
@@ -149,7 +224,7 @@ export const Form = () => {
                         label="Client's Email"
                         type="email"
                         state={invoice}
-                        setState={setInvoice}
+                        dispatch={dispatch}  
                     />
                     <Input
                         id="clientsStreetAdress"
@@ -157,7 +232,7 @@ export const Form = () => {
                         label="Street Adress"
                         type="text"
                         state={invoice}
-                        setState={setInvoice}
+                        dispatch={dispatch}
                         objectInStateName="clientAddress"
                     />
                     <div>
@@ -167,8 +242,8 @@ export const Form = () => {
                             label="City"
                             type="text"
                             state={invoice}
-                            setState={setInvoice}
-                            objectInStateName="clientAddress"
+                            dispatch={dispatch}
+                            objectInStateName="clientAddress"  
                         />
                         {/* pattern */}
                         <Input
@@ -177,8 +252,8 @@ export const Form = () => {
                             label="Post Code"
                             type="text"
                             state={invoice}
-                            setState={setInvoice}
-                            objectInStateName="clientAddress"
+                            dispatch={dispatch}
+                            objectInStateName="clientAddress" 
                         />
                         <Input
                             id="clientsCountry"
@@ -186,8 +261,8 @@ export const Form = () => {
                             label="Country"
                             type="text"
                             state={invoice}
-                            setState={setInvoice}
-                            objectInStateName="clientAddress"
+                            dispatch={dispatch}
+                            objectInStateName="clientAddress"  
                         />
                     </div>
                 </fieldset>
@@ -200,7 +275,8 @@ export const Form = () => {
                         label="Invoice Date"
                         type="date"
                         state={invoice}
-                        setState={setInvoice}
+                        dispatch={dispatch}
+                        blur={true}
                     />
                     <Input
                         htmlEl="select"
@@ -209,7 +285,8 @@ export const Form = () => {
                         label="Payment Terms"
                         type="number"
                         state={invoice}
-                        setState={setInvoice}
+                        dispatch={dispatch}
+                        blur={true}
                     />
                 </div>
                 <Input
@@ -218,11 +295,11 @@ export const Form = () => {
                     label="Project Description"
                     type="text"
                     state={invoice}
-                    setState={setInvoice}
+                    dispatch={dispatch}
                 />
             </section>
 
-            <ItemList invoice={invoice} setInvoice={setInvoice} />
+            <ItemList invoice={invoice} dispatch={dispatch} />
 
             <section>
                 {/* visible only in invoice creator*/}
