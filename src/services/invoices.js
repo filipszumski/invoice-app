@@ -5,6 +5,11 @@ export const getInvoices = async () => {
     return response.data;
 };
 
+export const getInvoice = async (id) => {
+    const response = await axios.get(`http://localhost:3333/invoices/${id}`);
+    return response.data;
+};
+
 export const postInvoice = async (invoice) => {
     const response = await axios.post("http://localhost:3333/invoices", invoice);
     return response.data;
