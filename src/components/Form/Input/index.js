@@ -1,9 +1,8 @@
 import React from "react";
 
-export const Input = ({ htmlEl, id, name, label, type, state, setState, objectInStateName }) => {
+export const Input = ({ htmlEl, id, name, label, type, state, dispatch, objectInStateName }) => {
 
     const getInputValue = () => {
-
         if (objectInStateName) {
             return state[objectInStateName][name];
         }
@@ -11,21 +10,12 @@ export const Input = ({ htmlEl, id, name, label, type, state, setState, objectIn
     };
 
     const onInputChange = ({ target }) => {
-        setState(() => {
-            if (objectInStateName) {
-                return {
-                    ...state,
-                    [objectInStateName]: {
-                        ...state[objectInStateName],
-                        [target.name]: type === "number" ? +target.value : target.value
-                    }
-                }
-            }
-            return {
-                ...state,
-                [target.name]: type === "number" ? +target.value : target.value
-            }
-        })
+
+        if (objectInStateName) {
+            return dispatch({ type: "updateStateObjectKey", payload: { target: target, objectInStateName: objectInStateName } })
+        }
+        return dispatch({ type: "updateStateKey", payload: { target: target, type: type } })
+
     };
 
     if (htmlEl === "select") {
