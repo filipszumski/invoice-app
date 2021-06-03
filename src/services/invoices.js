@@ -11,9 +11,7 @@ export const getInvoice = async (id) => {
 };
 
 export const deleteInvoice = async (id) => {
-    const response = await axios.delete(`http://localhost:3333/invoices/${id}`);
-    console.log(response);
-    return response.data;
+    await axios.delete(`http://localhost:3333/invoices/${id}`);
 };
 
 export const postInvoice = async (invoice) => {
