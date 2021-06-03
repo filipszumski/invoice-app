@@ -1,11 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router";
+import { Redirect, useHistory, useParams } from "react-router";
 import { format } from "date-fns";
 import { Button } from "../Button";
 import { Form } from "../Form/";
 import { DeleteInvoiceWindow } from "../DeleteInvoiceWindow";
-import { displayForm } from "../../store/status/status";
+import { displayForm, setStatus } from "../../store/status/status";
+import { deleteInvoice } from "../../services/invoices";
+import { toInvoices } from "../../routes";
 
 export const InvoicePage = () => {
     const history = useHistory();
@@ -26,6 +28,18 @@ export const InvoicePage = () => {
     const onGoBackButtonClick = () => {
         return history.goBack();
     };
+
+    const onDeleteButtonClick = () => {
+        (async () => {
+            try {
+                await deleteInvoice(params.id);
+                dispatch(setStatus("loading"));
+                history.push(toInvoices());
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }
     return (
         <>
             <main>
@@ -45,7 +59,7 @@ export const InvoicePage = () => {
                                         </p>
                                         <p>
                                             <Button onClick={onEditButtonClick} content="Edit" />
-                                            <Button content="Delete" />
+                                            <Button onClick={onDeleteButtonClick} content="Delete" />
                                             <Button content="Mark as Paid" />
                                         </p>
                                     </section>
