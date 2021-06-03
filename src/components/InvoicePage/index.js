@@ -1,13 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { format } from "date-fns";
 import { Button } from "../Button";
 import { Form } from "../Form/";
 import { DeleteInvoiceWindow } from "../DeleteInvoiceWindow";
-import { displayForm, setStatus } from "../../store/status/status";
-import { deleteInvoice } from "../../services/invoices";
-import { toInvoices } from "../../routes";
+import { displayForm, displayDeleteInvoiceAlert } from "../../store/status/status";
 
 export const InvoicePage = () => {
     const history = useHistory();
@@ -30,15 +28,7 @@ export const InvoicePage = () => {
     };
 
     const onDeleteButtonClick = () => {
-        (async () => {
-            try {
-                await deleteInvoice(params.id);
-                dispatch(setStatus("loading"));
-                history.push(toInvoices());
-            } catch (error) {
-                console.error(error);
-            }
-        })();
+        return dispatch(displayDeleteInvoiceAlert(true));
     }
     return (
         <>
@@ -129,7 +119,7 @@ export const InvoicePage = () => {
                 </section>
             </main>
             <Form id={params.id} />
-            <DeleteInvoiceWindow />
+            <DeleteInvoiceWindow id={params.id} active={status.deleteInvoiceActive} />
         </>
     )
 }
