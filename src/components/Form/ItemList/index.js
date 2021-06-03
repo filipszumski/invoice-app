@@ -2,49 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../../Button";
 import { Input } from "./Input";
 
-export const ItemList = ({ invoice, setInvoice }) => {
-    const [effectLauncher, setEffectLauncher] = useState({
-        number: Math.random(),
-        index: "",
-    });
-    const onAddItemListButtonChange = () => setInvoice({
-        ...invoice,
-        items: [
-            ...invoice.items,
-            {
+export const ItemList = ({ invoice, dispatch }) => {
+    const onAddItemListButtonChange = () => {
+        return dispatch({
+            type: "addListItem", payload: {
                 name: "",
                 quantity: "",
                 price: "",
-                total: ""
+                total: "",
             }
-        ]
-    });
+        })
+    };
 
-    useEffect(() => {
-        // MAYBE MAKE TOTAL AMOUNT OF ITEMS ON SUMBIT - ITS NOT NECESARRY TO DO I ON EVERY INPUT CHANGE
-        // TOTAL IN ITEM IS NECESSARY BECAUSE IT WILL DISPLAY VAULUE TO USER IN FORM 
-        console.log("ITEM TOTAL EFFECT HAS BEEN ");
-
-        setInvoice(invoice => ({
-            ...invoice,
-            items: invoice.items.map((item, index) => {
-                if (effectLauncher.index === index) {
-                    return {
-                        ...item,
-                        total: item.quantity * item.price,
-                    }
-                }
-                return {
-                    ...item,
-                }
-            }),
-        }))
-    }, [effectLauncher, setInvoice]);
-
-    const deleteListItem = (index) => setInvoice({
-        ...invoice,
-        items: invoice.items.filter((item, itemIndex) => index !== itemIndex)
-    });
+    const deleteListItem = (index) => dispatch({ type: "deleteListItem", payload: index });
 
     return (
         <section>
@@ -65,27 +35,27 @@ export const ItemList = ({ invoice, setInvoice }) => {
                                 type="text"
                                 liIndex={index}
                                 liItem={item}
-                                invoice={invoice}
-                                setInvoice={setInvoice}
-                                setEffectLauncher={setEffectLauncher}
+                                state={invoice}
+                                dispatch={dispatch}
+                                blur={false}
                             />
                             <Input
                                 name="quantity"
                                 type="number"
                                 liIndex={index}
                                 liItem={item}
-                                invoice={invoice}
-                                setInvoice={setInvoice}
-                                setEffectLauncher={setEffectLauncher}
+                                state={invoice}
+                                dispatch={dispatch}
+                                blur={true}
                             />
                             <Input
                                 name="price"
                                 type="number"
                                 liIndex={index}
                                 liItem={item}
-                                invoice={invoice}
-                                setInvoice={setInvoice}
-                                setEffectLauncher={setEffectLauncher}
+                                state={invoice}
+                                dispatch={dispatch}
+                                blur={true}
                             />
                             <span>{invoice.items[index].total || ""}</span>
                             <Button type="button" content="delete item" onClick={() => deleteListItem(index)} />
