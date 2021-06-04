@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import { format } from "date-fns";
 import { Button } from "../Button";
 import { Form } from "../Form/";
+import { deleteInvoice, patchInvoice } from "../../services/invoices";
+import { toInvoices } from "../../routes";
 import { DeleteInvoiceWindow } from "../DeleteInvoiceWindow";
-import { displayForm, displayDeleteInvoiceAlert } from "../../store/status/status";
+import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
 
 export const InvoicePage = () => {
     const history = useHistory();
@@ -13,6 +15,8 @@ export const InvoicePage = () => {
     const params = useParams();
     const status = useSelector(state => state.status);
     const invoice = useSelector(state => state.invoices.filter(invoice => invoice.id === params.id))[0];
+    const [invoiceFetchedById, setInvoiceFetchedById] = useState(false);
+
 
     // MOMENT.JS, LUXON
     const formatDate = (dateString) => {
@@ -21,14 +25,40 @@ export const InvoicePage = () => {
         return format(new Date(dateArrayNumbers[0], dateArrayNumbers[1], dateArrayNumbers[2]), "d MMM y");
     };
 
-    const onEditButtonClick = () => dispatch(displayForm(true))
+    const onEditButtonClick = () => invoiceFetchedById && dispatch(displayForm(true))
 
-    const onGoBackButtonClick = () => {
-        return history.goBack();
+    const onGoBackButtonClick = () => history.goBack();
+
+    const onDeleteButtonClick = (active) => invoiceFetchedById && dispatch(displayDeleteInvoiceAlert(active));
+
+    const onDeleteInvoiceButtonClick = async () => {
+        try {
+            await deleteInvoice(params.id);
+            dispatch(setStatus("loading"));
+            dispatch(displayDeleteInvoiceAlert(false));
+            history.push(toInvoices());
+        } catch (error) {
+            console.error(error);
+            dispatch(setStatus("error"));
+        }
     };
 
-    const onDeleteButtonClick = () => {
-        return dispatch(displayDeleteInvoiceAlert(true));
+    const markAsPaid = () => {
+        if (!invoiceFetchedById) {
+            return;
+        }
+        (async () => {
+            try {
+                await patchInvoice(params.id, {
+                    ...invoice,
+                    status: "paid",
+                });
+                dispatch(setStatus("loading"))
+            } catch (error) {
+                console.error(error);
+                dispatch(setStatus("error"))
+            }
+        })();
     }
     return (
         <>
@@ -49,8 +79,8 @@ export const InvoicePage = () => {
                                         </p>
                                         <p>
                                             <Button onClick={onEditButtonClick} content="Edit" />
-                                            <Button onClick={onDeleteButtonClick} content="Delete" />
-                                            <Button content="Mark as Paid" />
+                                            <Button onClick={() => onDeleteButtonClick(true)} content="Delete" />
+                                            {invoice.status !== "paid" && <Button onClick={markAsPaid} content="Mark as Paid" />}
                                         </p>
                                     </section>
                                     <section>
@@ -118,8 +148,12 @@ export const InvoicePage = () => {
 
                 </section>
             </main>
-            <Form id={params.id} />
-            <DeleteInvoiceWindow id={params.id} active={status.deleteInvoiceActive} />
+            <Form id={params.id} setInvoiceFetchedById={setInvoiceFetchedById} />
+            <DeleteInvoiceWindow
+                onDeleteInvoiceButtonClick={onDeleteInvoiceButtonClick}
+                onDeleteButtonClick={onDeleteButtonClick}
+                active={status.deleteInvoiceActive}
+            />
         </>
     )
 }
