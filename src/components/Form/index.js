@@ -1,18 +1,17 @@
 import React, { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router";
-import { format, setISODay } from "date-fns";
+import { format } from "date-fns";
 import addDays from 'date-fns/addDays'
-import { Button } from "../Button";
+import { Buttons } from "./Buttons";
 import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
 import { displayForm, setStatus } from "../../store/status/status";
-import { postInvoice, getInvoice } from "../../services/invoices";
+import { postInvoice, getInvoice, patchInvoice } from "../../services/invoices";
 
 
-export const Form = ({ id }) => {
+export const Form = ({ id, setInvoiceFetchedById }) => {
     const reducer = (state, { type, payload }) => {
         switch (type) {
             case "replaceState":
@@ -81,16 +80,17 @@ export const Form = ({ id }) => {
 
     useEffect(() => {
         if (!id) {
-            console.log("brak id");
             return;
         }
 
         (async () => {
             try {
+                console.log("Fetch Invoice By ID Effect");
                 const response = await getInvoice(id);
-                dispatch({ type: "replaceState", payload: response })
+                dispatch({ type: "replaceState", payload: response });
+                setInvoiceFetchedById(true);
             } catch (error) {
-                console.log("Błąd pobierania");
+                console.error(error);
             }
         })();
     }, []);
@@ -130,13 +130,10 @@ export const Form = ({ id }) => {
         return sum;
     };
 
-    console.log(setInvoiceTotal());
-
-    const onSubmitButtonClick = (status) => {
+    const onSubmitButtonClick = (event, status) => {
         if (status) {
             (async () => {
                 try {
-                    console.log("form send effect");
                     await postInvoice({
                         ...invoice,
                         status: status,
@@ -152,6 +149,23 @@ export const Form = ({ id }) => {
                 }
             })();
         };
+
+        if (event.target.innerText === "Save Changes") {
+            (async () => {
+                try {
+                    await patchInvoice(id, {
+                        ...invoice,
+                        total: setInvoiceTotal(),
+                        paymentDue: setPaymentDue(),
+                    });
+                    dispatchReduxAction(setStatus("loading"));
+
+                } catch (error) {
+                    console.error(error);
+                    dispatchReduxAction(setStatus("error"));
+                }
+            })();
+        }
 
         dispatchReduxAction(displayForm(false));
     };
@@ -193,7 +207,7 @@ export const Form = ({ id }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="senderAddress"
-                            
+
                         />
                         <Input
                             id="sendersCountry"
@@ -203,7 +217,7 @@ export const Form = ({ id }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="senderAddress"
-                            
+
                         />
                     </div>
                 </fieldset>
@@ -216,7 +230,7 @@ export const Form = ({ id }) => {
                         label="Client's Name"
                         type="text"
                         state={invoice}
-                        dispatch={dispatch}  
+                        dispatch={dispatch}
                     />
                     <Input
                         id="clientsEmail"
@@ -224,7 +238,7 @@ export const Form = ({ id }) => {
                         label="Client's Email"
                         type="email"
                         state={invoice}
-                        dispatch={dispatch}  
+                        dispatch={dispatch}
                     />
                     <Input
                         id="clientsStreetAdress"
@@ -243,7 +257,7 @@ export const Form = ({ id }) => {
                             type="text"
                             state={invoice}
                             dispatch={dispatch}
-                            objectInStateName="clientAddress"  
+                            objectInStateName="clientAddress"
                         />
                         {/* pattern */}
                         <Input
@@ -253,7 +267,7 @@ export const Form = ({ id }) => {
                             type="text"
                             state={invoice}
                             dispatch={dispatch}
-                            objectInStateName="clientAddress" 
+                            objectInStateName="clientAddress"
                         />
                         <Input
                             id="clientsCountry"
@@ -262,7 +276,7 @@ export const Form = ({ id }) => {
                             type="text"
                             state={invoice}
                             dispatch={dispatch}
-                            objectInStateName="clientAddress"  
+                            objectInStateName="clientAddress"
                         />
                     </div>
                 </fieldset>
@@ -298,17 +312,11 @@ export const Form = ({ id }) => {
                     dispatch={dispatch}
                 />
             </section>
-
             <ItemList invoice={invoice} dispatch={dispatch} />
-
-            <section>
-                {/* visible only in invoice creator*/}
-                <Button onClick={() => onSubmitButtonClick()} type="button" content={"Discard"} />
-                <div>
-                    <Button type="button" onClick={() => onSubmitButtonClick("draft")} content={"Save as Draft"} />
-                    <Button type="button" onClick={() => onSubmitButtonClick("pending")} content={"Save & Send"} />
-                </div>
-            </section>
+            <Buttons
+                id={id}
+                onSubmitButtonClick={onSubmitButtonClick}
+            />
         </StyledForm>
     )
 }
