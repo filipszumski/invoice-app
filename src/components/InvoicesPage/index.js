@@ -52,9 +52,9 @@ export const InvoicesPage = () => {
 
                 {/*   No invoices  */}
                 <section>
-                    {status.status === "loading"
+                    {status.stage === "loading"
                         ? <p>Loading in progress...</p>
-                        : status.status === "error"
+                        : status.stage === "error"
                             ? <p>Error occurred</p>
                             : (
                                 invoices.length === 0

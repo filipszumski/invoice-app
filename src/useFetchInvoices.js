@@ -5,10 +5,9 @@ import { getInvoicesDataSuccess } from "./store/invoices/invoices";
 import { setStatus } from "./store/status/status";
 
 export const useFetchInvoices = () => {
-    const timeoutId = useRef(null);
     const status = useSelector(state => state.status);
     const dispatch = useDispatch();
-
+    // wynieść staty do globalnych zmiennych
     useEffect(() => {
         console.log("Fetch Invoices Effect");
         const fetchData = async () => {
@@ -23,14 +22,12 @@ export const useFetchInvoices = () => {
             }
         };
 
-        if (status.status !== "loading") {
-            console.log("Fectch Invoice Effect Return");
+        if (status.stage !== "loading") {
+            console.log("Fectch Invoice Effect RETURN");
             return;
         }
 
-        timeoutId.current = setTimeout(fetchData, 1000);
-        console.log("Fectch Invoice Effect DONE");
+        fetchData();
 
-        return () => clearTimeout(timeoutId.current);
-    }, [status.status])
+    }, [status.stage])
 };

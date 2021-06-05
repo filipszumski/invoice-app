@@ -33,9 +33,9 @@ export const InvoicePage = () => {
 
     const onDeleteInvoiceButtonClick = async () => {
         try {
-            await deleteInvoice(params.id);
             dispatch(setStatus("loading"));
             dispatch(displayDeleteInvoiceAlert(false));
+            await deleteInvoice(params.id);
             history.push(toInvoices());
         } catch (error) {
             console.error(error);
@@ -49,11 +49,11 @@ export const InvoicePage = () => {
         }
         (async () => {
             try {
+                dispatch(setStatus("loading"))
                 await patchInvoice(params.id, {
                     ...invoice,
                     status: "paid",
                 });
-                dispatch(setStatus("loading"))
             } catch (error) {
                 console.error(error);
                 dispatch(setStatus("error"))
@@ -66,9 +66,9 @@ export const InvoicePage = () => {
                 {/* add nice arrow */}
                 <Button onClick={onGoBackButtonClick} content="Go back" extraContent="<" />
                 <section>
-                    {status.status === "loading"
+                    {status.stage === "loading"
                         ? <p>Loading in progress...</p>
-                        : status.status === "error"
+                        : status.stage === "error"
                             ? <p>Error occurred</p>
                             : (
                                 <>

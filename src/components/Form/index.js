@@ -134,6 +134,7 @@ export const Form = ({ id, setInvoiceFetchedById }) => {
         if (status) {
             (async () => {
                 try {
+                    dispatchReduxAction(setStatus("loading"));
                     await postInvoice({
                         ...invoice,
                         status: status,
@@ -141,8 +142,6 @@ export const Form = ({ id, setInvoiceFetchedById }) => {
                         id: setInvoiceID(),
                         total: setInvoiceTotal(),
                     });
-                    dispatchReduxAction(setStatus("loading"));
-
                 } catch (error) {
                     console.error(error);
                     dispatchReduxAction(setStatus("error"));
