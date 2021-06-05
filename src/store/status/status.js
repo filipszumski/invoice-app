@@ -24,7 +24,7 @@ export const displayDeleteInvoiceAlert = (payload) => {
 };
 
 const initialStatus = {
-    status: "loading",
+    stage: "loading",
     overlayActive: false,
     formActive: false,
     deleteInvoiceActive: false,
@@ -36,7 +36,7 @@ export const status = (state = initialStatus, action) => {
         case SET_STATUS:
             return {
                 ...state,
-                status: action.payload,
+                stage: action.payload,
             };
         case DISPLAY_FORM:
             return {
@@ -44,12 +44,12 @@ export const status = (state = initialStatus, action) => {
                 formActive: action.payload,
                 overlayActive: action.payload,
             };
-            case DISPLAY_ALERT:
-                return {
-                    ...state,
-                    deleteInvoiceActive: action.payload,
-                    overlayActive: action.payload,
-                };
+        case DISPLAY_ALERT:
+            return {
+                ...state,
+                deleteInvoiceActive: action.payload,
+                overlayActive: action.payload,
+            };
         default:
             return state;
     }

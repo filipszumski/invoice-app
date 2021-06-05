@@ -22,12 +22,12 @@ export const useFetchInvoices = () => {
             }
         };
 
-        if (status.status !== "loading") {
+        if (status.stage !== "loading") {
             console.log("Fectch Invoice Effect RETURN");
             return;
         }
 
         fetchData();
 
-    }, [status.status])
+    }, [status.stage])
 };
