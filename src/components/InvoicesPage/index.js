@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { displayForm, setStatus } from "../../store/status/status";
+import { displayForm } from "../../store/status/status";
 import { Button } from "../Button";
 import { toInvoice } from "../../routes"
 import { Form } from "../Form";
