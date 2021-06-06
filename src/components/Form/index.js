@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
 import addDays from 'date-fns/addDays'
@@ -7,11 +7,17 @@ import { Input } from "./Input";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { initialState } from "./initialState";
-import { displayForm, setStatus } from "../../store/status/status";
+import { displayForm, setStatus, getInvoicesActive } from "../../store/status/status";
 import { postInvoice, getInvoice, patchInvoice } from "../../services/invoices";
 
+export const Form = ({ id, fetchedInvoiceState }) => {
+    const init = (initialState) => {
+        if (!id) {
+            return initialState;
+        }
+        return fetchedInvoiceState;
+    };
 
-export const Form = ({ id, setInvoiceFetchedById }) => {
     const reducer = (state, { type, payload }) => {
         switch (type) {
             case "replaceState":
@@ -73,27 +79,10 @@ export const Form = ({ id, setInvoiceFetchedById }) => {
         }
     };
 
-    const [invoice, dispatch] = useReducer(reducer, initialState);
+    const [invoice, dispatch] = useReducer(reducer, initialState, init);
     const status = useSelector(state => state.status);
     const dispatchReduxAction = useDispatch();
     console.log(invoice);
-
-    useEffect(() => {
-        if (!id) {
-            return;
-        }
-
-        (async () => {
-            try {
-                console.log("Fetch Invoice By ID Effect");
-                const response = await getInvoice(id);
-                dispatch({ type: "replaceState", payload: response });
-                setInvoiceFetchedById(true);
-            } catch (error) {
-                console.error(error);
-            }
-        })();
-    }, []);
 
     const setPaymentDue = () => {
         const createdAtDateArray = invoice.createdAt.split("-");
@@ -142,6 +131,7 @@ export const Form = ({ id, setInvoiceFetchedById }) => {
                         id: setInvoiceID(),
                         total: setInvoiceTotal(),
                     });
+                    dispatchReduxAction(getInvoicesActive(true));
                 } catch (error) {
                     console.error(error);
                     dispatchReduxAction(setStatus("error"));
@@ -152,20 +142,19 @@ export const Form = ({ id, setInvoiceFetchedById }) => {
         if (event.target.innerText === "Save Changes") {
             (async () => {
                 try {
+                    dispatchReduxAction(setStatus("loading"));
                     await patchInvoice(id, {
                         ...invoice,
                         total: setInvoiceTotal(),
                         paymentDue: setPaymentDue(),
                     });
-                    dispatchReduxAction(setStatus("loading"));
-
+                    dispatchReduxAction(getInvoicesActive(true));
                 } catch (error) {
                     console.error(error);
                     dispatchReduxAction(setStatus("error"));
                 }
             })();
         }
-
         dispatchReduxAction(displayForm(false));
     };
 
