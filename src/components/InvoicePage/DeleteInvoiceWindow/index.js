@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../Button";
+import { Button } from "../../Button";
 import { Wrapper } from "./styled";
 
 export const DeleteInvoiceWindow = ({ onDeleteInvoiceButtonClick, onDeleteButtonClick, active }) => {
