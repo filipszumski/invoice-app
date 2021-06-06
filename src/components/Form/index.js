@@ -1,162 +1,19 @@
-import React, { useReducer } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
-import addDays from 'date-fns/addDays'
+import React from "react";
+import { useSelector } from "react-redux";
 import { Buttons } from "./Buttons";
 import { Input } from "./Input";
+import { Select } from "./Select";
 import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
-import { initialState } from "./initialState";
-import { displayForm, setStatus, getInvoicesActive } from "../../store/status/status";
-import { postInvoice, getInvoice, patchInvoice } from "../../services/invoices";
+import { useForm } from "./useForm";
+import { useFormButtons } from "./useFormButtons";
 
 export const Form = ({ id, fetchedInvoiceState }) => {
-    const init = (initialState) => {
-        if (!id) {
-            return initialState;
-        }
-        return fetchedInvoiceState;
-    };
-
-    const reducer = (state, { type, payload }) => {
-        switch (type) {
-            case "replaceState":
-                return payload;
-            case "updateStateKey":
-                return {
-                    ...state,
-                    [payload.target.name]: payload.type === "number" ? +payload.target.value : payload.target.value
-                };
-            case "updateStateObjectKey":
-                return {
-                    ...state,
-                    [payload.objectInStateName]: {
-                        ...state[payload.objectInStateName],
-                        [payload.target.name]: payload.target.type === "number" ? +payload.target.value : payload.target.value
-                    }
-                };
-            case "addListItem":
-                return {
-                    ...state,
-                    items: [
-                        ...state.items,
-                        { name: "", quantity: "", price: "", total: "" }
-                    ]
-                };
-            case "deleteListItem":
-                return {
-                    ...state,
-                    items: state.items.filter((item, index) => index !== payload)
-                };
-            case "updateListItemObjectKey":
-                return {
-                    ...state,
-                    items: state.items.map((item, index) => {
-                        if (index === payload.index) {
-                            return {
-                                ...item,
-                                [payload.target.name]: (type === "number" ? +payload.target.value : payload.target.value) || ""
-                            }
-                        }
-                        return { ...item }
-                    })
-                };
-            case "updateListItemObjectKeyOnInputBlur":
-                return {
-                    ...state,
-                    items: state.items.map((item, index) => {
-                        if (index === payload.index) {
-                            return {
-                                ...item,
-                                total: item.quantity * item.price
-                            }
-                        }
-                        return { ...item }
-                    }),
-                };
-            default:
-                return state;
-        }
-    };
-
-    const [invoice, dispatch] = useReducer(reducer, initialState, init);
+    const [invoice, dispatch] = useForm(id, fetchedInvoiceState);
+    const [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick] = useFormButtons(invoice, id);
     const status = useSelector(state => state.status);
-    const dispatchReduxAction = useDispatch();
+
     console.log(invoice);
-
-    const setPaymentDue = () => {
-        const createdAtDateArray = invoice.createdAt.split("-");
-        const paymentDueDate = addDays(new Date(parseInt(createdAtDateArray[0], 10), parseInt(createdAtDateArray[1] - 1, 10), parseInt(createdAtDateArray[2], 10)), invoice.paymentTerms);
-
-        if (!invoice.createdAt) {
-            return "";
-        }
-        return format(paymentDueDate, "yyyy-MM-dd");
-    };
-
-    const setInvoiceID = () => {
-        const getRandomNumber = () => {
-            const randomNumber = Math.floor(Math.random() * 10);
-            return randomNumber.toString();
-        };
-
-        const getRandomLetter = () => {
-            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return alphabet[Math.floor(Math.random() * alphabet.length)];
-        };
-
-        return `${getRandomLetter()}${getRandomLetter()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}${getRandomNumber()}`
-    };
-
-    const setInvoiceTotal = () => {
-        const itemListTotalArray = invoice.items.map(item => item.total);
-        let sum = 0;
-
-        for (let i = 0; i < itemListTotalArray.length; i++) {
-            sum += itemListTotalArray[i];
-        }
-
-        return sum;
-    };
-
-    const onSubmitButtonClick = (event, status) => {
-        if (status) {
-            (async () => {
-                try {
-                    dispatchReduxAction(setStatus("loading"));
-                    await postInvoice({
-                        ...invoice,
-                        status: status,
-                        paymentDue: setPaymentDue(),
-                        id: setInvoiceID(),
-                        total: setInvoiceTotal(),
-                    });
-                    dispatchReduxAction(getInvoicesActive(true));
-                } catch (error) {
-                    console.error(error);
-                    dispatchReduxAction(setStatus("error"));
-                }
-            })();
-        };
-
-        if (event.target.innerText === "Save Changes") {
-            (async () => {
-                try {
-                    dispatchReduxAction(setStatus("loading"));
-                    await patchInvoice(id, {
-                        ...invoice,
-                        total: setInvoiceTotal(),
-                        paymentDue: setPaymentDue(),
-                    });
-                    dispatchReduxAction(getInvoicesActive(true));
-                } catch (error) {
-                    console.error(error);
-                    dispatchReduxAction(setStatus("error"));
-                }
-            })();
-        }
-        dispatchReduxAction(displayForm(false));
-    };
 
     return (
         // {/* <!-- Create new invoice form --> */ }
@@ -280,8 +137,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         dispatch={dispatch}
                         blur={true}
                     />
-                    <Input
-                        htmlEl="select"
+                    <Select
                         id="paymentTerms"
                         name="paymentTerms"
                         label="Payment Terms"
@@ -303,7 +159,9 @@ export const Form = ({ id, fetchedInvoiceState }) => {
             <ItemList invoice={invoice} dispatch={dispatch} />
             <Buttons
                 id={id}
-                onSubmitButtonClick={onSubmitButtonClick}
+                onSubmitInvoiceButtonClick={onSubmitInvoiceButtonClick}
+                onSubmitInvoiceUpdateButtonClick={onSubmitInvoiceUpdateButtonClick}
+                onCloseFormButtonClick={onCloseFormButtonClick}
             />
         </StyledForm>
     )

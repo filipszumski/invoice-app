@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { displayForm } from "../../store/status/status";
 import { Button } from "../Button";
-import { toInvoice } from "../../routes"
+import { toInvoice } from "../../routes";
 import { Form } from "../Form";
 
 export const InvoicesPage = () => {
@@ -11,50 +11,45 @@ export const InvoicesPage = () => {
     const invoices = useSelector(state => state.invoices);
     const dispatch = useDispatch();
 
-    const onNewInvoiceButtonClick = () => dispatch(displayForm(true));
-
     return (
         <>
             <main>
-                <header>
-                    <div>
-                        <h1>Invoices</h1>
-                        <p>There are {invoices.length} total invoices</p>
-                        {/* or no incove text */}
-                    </div>
-                    <div>
-                        <div>
-                            <select>
-                                <option disabled hidden>Filter by status</option>
-                            </select>
-                            <div>
-                                <p>
-                                    <label htmlFor="draft">Draft</label>
-                                    <input id="draft" type="checkbox" name="draft" />
-                                </p>
-                                <p>
-                                    <label htmlFor="prending">Pending</label>
-                                    <input id="prending" type="checkbox" name="prending" />
-                                </p>
-                                <p>
-                                    <label htmlFor="paid">Paid</label>
-                                    <input id="paid" type="checkbox" name="paid" />
-                                </p>
-                            </div>
-                        </div>
-                        {/* add + image */}
-                        <Button onClick={onNewInvoiceButtonClick} content="New Invoice" extraContent="+" />
-                    </div>
-                </header>
-
-                {/*   No invoices  */}
-                <section>
-                    {status.stage === "loading"
-                        ? <p>Loading in progress...</p>
-                        : status.stage === "error"
-                            ? <p>Error occurred</p>
-                            : (
-                                invoices.length === 0
+                {status.stage === "loading"
+                    ? <p>Loading in progress...</p>
+                    : status.stage === "error"
+                        ? <p>Error occurred</p>
+                        : (<>
+                            <header>
+                                <div>
+                                    <h1>Invoices</h1>
+                                    <p>There are {invoices.length} total invoices</p>
+                                    {/* or no incove text */}
+                                </div>
+                                <div>
+                                    <div>
+                                        <select>
+                                            <option disabled hidden>Filter by status</option>
+                                        </select>
+                                        <div>
+                                            <p>
+                                                <label htmlFor="draft">Draft</label>
+                                                <input id="draft" type="checkbox" name="draft" />
+                                            </p>
+                                            <p>
+                                                <label htmlFor="prending">Pending</label>
+                                                <input id="prending" type="checkbox" name="prending" />
+                                            </p>
+                                            <p>
+                                                <label htmlFor="paid">Paid</label>
+                                                <input id="paid" type="checkbox" name="paid" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <Button onClick={() => dispatch(displayForm(true))} content="New Invoice" extraContent="+" />
+                                </div>
+                            </header>
+                            <section>
+                                {invoices.length === 0
                                     ? <>
                                         <h2>There is nothing here</h2>
                                         <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
@@ -69,13 +64,11 @@ export const InvoicesPage = () => {
                                                 <span>{invoice.status}</span>
                                             </p>
                                         </Link>
-                                    ))
-                            )}
-                </section>
-                {/* <!-- No invoices end --> */}
-                {/* or invoices List */}
+                                    ))}
+                            </section>
+                        </>)}
             </main>
             <Form />
         </>
     )
-}
+};
