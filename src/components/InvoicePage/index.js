@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Button } from "../Button";
 import { Form } from "../Form/";
-import { DeleteInvoiceWindow } from "../DeleteInvoiceWindow";
+import { DeleteInvoiceWindow } from "./DeleteInvoiceWindow";
 import { useInvoicePageButtons } from "./useInvoicePageButtons";
 
 export const InvoicePage = () => {
