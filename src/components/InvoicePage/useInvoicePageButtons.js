@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { toInvoices } from "../../routes";
 import { deleteInvoice, patchInvoice } from "../../services/invoices";
-import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
+import { displayForm, displayDeleteInvoiceAlert, setStatus, getInvoicesActive } from "../../store/status/status";
 
 export const useInvoicePageButtons = (params, invoice) => {
     const history = useHistory();
@@ -20,6 +20,7 @@ export const useInvoicePageButtons = (params, invoice) => {
             dispatch(displayDeleteInvoiceAlert(false));
             history.push(toInvoices());
             await deleteInvoice(params.id);
+            dispatch(getInvoicesActive(true));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
@@ -33,6 +34,7 @@ export const useInvoicePageButtons = (params, invoice) => {
                 ...invoice,
                 status: "paid",
             });
+            dispatch(getInvoicesActive(true));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
