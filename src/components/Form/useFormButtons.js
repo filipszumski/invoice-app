@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import addDays from 'date-fns/addDays'
-import { displayForm, setStatus } from "../../store/status/status";
+import { displayForm, getInvoicesActive, setStatus } from "../../store/status/status";
 import { postInvoice, patchInvoice } from "../../services/invoices";
 import { useDispatch } from "react-redux";
 
@@ -53,6 +53,7 @@ export const useFormButtons = (invoice, id) => {
                 id: setInvoiceID(),
                 total: setInvoiceTotal(),
             });
+            dispatch(getInvoicesActive(true));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
@@ -69,6 +70,7 @@ export const useFormButtons = (invoice, id) => {
                 total: setInvoiceTotal(),
                 paymentDue: setPaymentDue(),
             });
+            dispatch(getInvoicesActive(true));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
