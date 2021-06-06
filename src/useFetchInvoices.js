@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvoices } from "./services/invoices";
 import { getInvoicesDataSuccess } from "./store/invoices/invoices";
-import { setStatus } from "./store/status/status";
+import { getInvoicesActive, setStatus } from "./store/status/status";
 
 export const useFetchInvoices = () => {
     const status = useSelector(state => state.status);
     const dispatch = useDispatch();
-    // wynieść staty do globalnych zmiennych
+
     useEffect(() => {
         console.log("Fetch Invoices Effect");
         const fetchData = async () => {
@@ -15,6 +15,7 @@ export const useFetchInvoices = () => {
                 const response = await getInvoices();
                 dispatch(getInvoicesDataSuccess(response));
                 dispatch(setStatus("success"));
+                dispatch(getInvoicesActive(false));
             }
             catch (error) {
                 console.error(error);
@@ -22,12 +23,12 @@ export const useFetchInvoices = () => {
             }
         };
 
-        if (status.stage !== "loading") {
+        if (!status.getInvoicesActive) {
             console.log("Fectch Invoice Effect RETURN");
             return;
         }
 
         fetchData();
 
-    }, [status.stage, dispatch])
+    }, [status.getInvoicesActive, dispatch])
 };
