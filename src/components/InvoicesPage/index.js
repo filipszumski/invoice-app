@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { displayForm } from "../../store/status/status";
+import { displayForm, setStatus } from "../../store/status/status";
 import { Button } from "../Button";
 import { toInvoice } from "../../routes"
 import { Form } from "../Form";
@@ -11,10 +11,7 @@ export const InvoicesPage = () => {
     const invoices = useSelector(state => state.invoices);
     const dispatch = useDispatch();
 
-
-    const onNewInvoiceButtonClick = () => {
-        dispatch(displayForm(true));
-    }
+    const onNewInvoiceButtonClick = () => dispatch(displayForm(true));
 
     return (
         <>
