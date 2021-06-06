@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import { format } from "date-fns";
 import { Button } from "../Button";
 import { Form } from "../Form/";
-import { deleteInvoice, patchInvoice } from "../../services/invoices";
+import { deleteInvoice, getInvoice, patchInvoice } from "../../services/invoices";
 import { toInvoices } from "../../routes";
 import { DeleteInvoiceWindow } from "../DeleteInvoiceWindow";
-import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
+import { displayForm, displayDeleteInvoiceAlert, setStatus, getInvoicesActive } from "../../store/status/status";
 
 export const InvoicePage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const params = useParams();
     const status = useSelector(state => state.status);
-    const invoice = useSelector(state => state.invoices.filter(invoice => invoice.id === params.id))[0];
-    const [invoiceFetchedById, setInvoiceFetchedById] = useState(false);
+    const [invoice, setInvoice] = useState({});
 
+    useEffect(() => {
+        (async () => {
+            try {
+                console.log("Fetch Invoice By ID Effect");
+                const response = await getInvoice(params.id);
+                setInvoice(response);
+            } catch (error) {
+                console.error(error);
+                dispatch(setStatus("error"));
+            }
+        })();
+    }, []);
 
     // MOMENT.JS, LUXON
     const formatDate = (dateString) => {
@@ -25,48 +36,46 @@ export const InvoicePage = () => {
         return format(new Date(dateArrayNumbers[0], dateArrayNumbers[1], dateArrayNumbers[2]), "d MMM y");
     };
 
-    const onEditButtonClick = () => invoiceFetchedById && dispatch(displayForm(true))
+    const onEditButtonClick = () => dispatch(displayForm(true))
 
     const onGoBackButtonClick = () => history.goBack();
 
-    const onDeleteButtonClick = (active) => invoiceFetchedById && dispatch(displayDeleteInvoiceAlert(active));
+    const onDeleteButtonClick = (active) => dispatch(displayDeleteInvoiceAlert(active));
 
     const onDeleteInvoiceButtonClick = async () => {
         try {
             dispatch(setStatus("loading"));
             dispatch(displayDeleteInvoiceAlert(false));
-            await deleteInvoice(params.id);
             history.push(toInvoices());
+            await deleteInvoice(params.id);
+            dispatch(getInvoicesActive(true));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
         }
     };
 
-    const markAsPaid = () => {
-        if (!invoiceFetchedById) {
-            return;
+    const markAsPaid = async () => {
+        try {
+            dispatch(setStatus("loading"));
+            await patchInvoice(params.id, {
+                ...invoice,
+                status: "paid",
+            });
+            dispatch(getInvoicesActive(true));
+        } catch (error) {
+            console.error(error);
+            dispatch(setStatus("error"));
         }
-        (async () => {
-            try {
-                dispatch(setStatus("loading"))
-                await patchInvoice(params.id, {
-                    ...invoice,
-                    status: "paid",
-                });
-            } catch (error) {
-                console.error(error);
-                dispatch(setStatus("error"))
-            }
-        })();
-    }
+    };
+
     return (
         <>
             <main>
                 {/* add nice arrow */}
                 <Button onClick={onGoBackButtonClick} content="Go back" extraContent="<" />
                 <section>
-                    {status.stage === "loading"
+                    {status.stage === "loading" || Object.keys(invoice).length === 0
                         ? <p>Loading in progress...</p>
                         : status.stage === "error"
                             ? <p>Error occurred</p>
@@ -145,15 +154,18 @@ export const InvoicePage = () => {
                                     </section>
                                 </>
                             )}
-
                 </section>
             </main>
-            <Form id={params.id} setInvoiceFetchedById={setInvoiceFetchedById} />
-            <DeleteInvoiceWindow
-                onDeleteInvoiceButtonClick={onDeleteInvoiceButtonClick}
-                onDeleteButtonClick={onDeleteButtonClick}
-                active={status.deleteInvoiceActive}
-            />
+            {status.stage === "success" && Object.keys(invoice).length > 0 && (
+                <>
+                    <Form id={params.id} fetchedInvoiceState={invoice} />
+                    <DeleteInvoiceWindow
+                        onDeleteInvoiceButtonClick={onDeleteInvoiceButtonClick}
+                        onDeleteButtonClick={onDeleteButtonClick}
+                        active={status.deleteInvoiceActive}
+                    />
+                </>
+            )}
         </>
     )
 }
