@@ -1,8 +1,8 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvoices } from "./services/invoices";
 import { getInvoicesDataSuccess } from "./store/invoices/invoices";
-import { setStatus } from "./store/status/status";
+import { setStatus, getInvoicesActive } from "./store/status/status";
 
 export const useFetchInvoices = () => {
     const status = useSelector(state => state.status);
@@ -13,21 +13,22 @@ export const useFetchInvoices = () => {
         const fetchData = async () => {
             try {
                 const response = await getInvoices();
-                dispatch(getInvoicesDataSuccess(response))
+                dispatch(getInvoicesDataSuccess(response));
                 dispatch(setStatus("success"));
+                dispatch(getInvoicesActive(false));
             }
             catch (error) {
                 console.error(error);
-                dispatch(setStatus("error"))
+                dispatch(setStatus("error"));
             }
         };
 
-        if (status.stage !== "loading") {
+        if (!status.getInvoicesActive) {
             console.log("Fectch Invoice Effect RETURN");
             return;
         }
 
         fetchData();
 
-    }, [status.stage])
+    }, [status.getInvoicesActive])
 };
