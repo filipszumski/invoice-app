@@ -1,5 +1,5 @@
 import React from "react";
-import { UPDATE_STATE_KEY } from "../stateActionsConsts";
+import { UPDATE_STATE_KEY } from "../consts";
 
 export const Select = ({ id, name, label, type, state, dispatch }) => {
 

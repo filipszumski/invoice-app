@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import { initialState } from "./initialState";
-import * as stateActions from "./stateActionsConsts";
+import * as stateActions from "./consts";
 
 export const useForm = (id, fetchedInvoiceState) => {
     const init = (initialState) => {

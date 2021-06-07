@@ -1,5 +1,5 @@
 import React from "react";
-import { UPDATE_STATE_OBJECT_KEY, UPDATE_STATE_KEY } from "../stateActionsConsts";
+import { UPDATE_STATE_OBJECT_KEY, UPDATE_STATE_KEY } from "../consts";
 
 export const Input = ({ id, name, label, type, state, dispatch, objectInStateName }) => {
     const getInputValue = () => {

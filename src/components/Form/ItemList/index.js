@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../../Button";
 import { Input } from "./Input";
-import { ADD_LIST_ITEM, DELETE_LIST_ITEM } from "../stateActionsConsts";
+import { ADD_LIST_ITEM, DELETE_LIST_ITEM } from "../consts";
 
 export const ItemList = ({ invoice, dispatch }) => {
     const onAddItemListButtonChange = () => {

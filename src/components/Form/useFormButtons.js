@@ -5,7 +5,7 @@ import { displayForm, setStatus } from "../../store/status/status";
 import { postInvoice, patchInvoice } from "../../services/invoices";
 import { addInvoiceDataSuccess } from "../../store/invoices/invoices";
 import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
-import { CLEAR_FORM } from "./stateActionsConsts";
+import { CLEAR_FORM } from "./consts";
 
 export const useFormButtons = (invoice, id, formStateDispatch, initialState) => {
     const dispatch = useDispatch();
