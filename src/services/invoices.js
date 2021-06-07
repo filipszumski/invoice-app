@@ -15,9 +15,11 @@ export const deleteInvoice = async (id) => {
 };
 
 export const patchInvoice = async (id, invoice) => {
-    await axios.patch(`http://localhost:3333/invoices/${id}`, invoice);
+    const response = await axios.patch(`http://localhost:3333/invoices/${id}`, invoice);
+    return response.data;
 };
 
 export const postInvoice = async (invoice) => {
-    await axios.post("http://localhost:3333/invoices", invoice);
+    const response = await axios.post("http://localhost:3333/invoices", invoice);
+    return response.data;
 };
