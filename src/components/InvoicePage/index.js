@@ -10,6 +10,7 @@ import { useFetchInvoice } from "./useFetchInvoice";
 import { Link } from "react-router-dom";
 import { toInvoices } from "../../shared/routes";
 import * as statusStage from "../../shared/consts/stages";
+import { paidStatus } from "./consts";
 
 export const InvoicePage = () => {
     useFetchInvoice();
@@ -42,7 +43,7 @@ export const InvoicePage = () => {
                                     <p>
                                         <Button onClick={onEditButtonClick} content="Edit" />
                                         <Button onClick={() => onDeleteButtonClick(true)} content="Delete" />
-                                        {invoice.status !== "paid" && <Button onClick={markAsPaid} content="Mark as Paid" />}
+                                        {invoice.status !== paidStatus && <Button onClick={markAsPaid} content="Mark as Paid" />}
                                     </p>
                                 </section>
                                 <section>

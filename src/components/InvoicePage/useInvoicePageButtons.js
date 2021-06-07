@@ -5,6 +5,7 @@ import { deleteInvoice, patchInvoice } from "../../services/invoices";
 import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
 import * as statusStage from "../../shared/consts/stages";
+import { paidStatus } from "./consts";
 
 export const useInvoicePageButtons = (params, invoice) => {
     const history = useHistory();
@@ -33,7 +34,7 @@ export const useInvoicePageButtons = (params, invoice) => {
             dispatch(setStatus(statusStage.loading));
             const response = await patchInvoice(params.id, {
                 ...invoice,
-                status: "paid",
+                status: paidStatus,
             });
             dispatch(updateInvoiceDataSuccess(response));
             dispatch(setStatus(statusStage.success));
