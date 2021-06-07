@@ -1,18 +1,10 @@
 const SET_STATUS = "SET_STATUS";
-const GET_DATA_ACTIVE = "GET_DATA_ACTIVE";
 const DISPLAY_FORM = "DISPLAY_FORM";
 const DISPLAY_ALERT = "DISPLAY_ALERT";
 
 export const setStatus = (payload) => {
     return {
         type: SET_STATUS,
-        payload: payload
-    }
-};
-
-export const getDataActive = (payload) => {
-    return {
-        type: GET_DATA_ACTIVE,
         payload: payload
     }
 };
@@ -33,7 +25,6 @@ export const displayDeleteInvoiceAlert = (payload) => {
 
 const initialStatus = {
     stage: "loading",
-    getDataActive: true,
     overlayActive: false,
     formActive: false,
     deleteInvoiceActive: false,
@@ -45,11 +36,6 @@ export const status = (state = initialStatus, action) => {
             return {
                 ...state,
                 stage: action.payload,
-            };
-        case GET_DATA_ACTIVE:
-            return {
-                ...state,
-                getDataActive: action.payload,
             };
         case DISPLAY_FORM:
             return {
