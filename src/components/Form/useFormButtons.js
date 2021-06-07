@@ -84,7 +84,10 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
         }
     };
 
-    const onCloseFormButtonClick = () => dispatch(displayForm(false));
+    const onCloseFormButtonClick = () => {
+        formStateDispatch({ type: CLEAR_FORM, payload: initialState });
+        dispatch(displayForm(false));
+    };
 
     return [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick];
 }
