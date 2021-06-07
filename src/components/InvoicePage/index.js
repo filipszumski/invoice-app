@@ -28,13 +28,14 @@ export const InvoicePage = () => {
     return (
         <>
             <main>
-                <Button onClick={onGoBackButtonClick} content={<Link to={toInvoices()}>Go Back</Link>} extraContent="<" />
-                <section>
-                    {status.stage === statusStage.loading
-                        ? <p>Loading in progress...</p>
-                        : status.stage === statusStage.error
-                            ? <p>Error occurred</p>
-                            : (<>
+
+                {status.stage === statusStage.loading
+                    ? <p>Loading in progress...</p>
+                    : status.stage === statusStage.error
+                        ? <p>Error occurred</p>
+                        : (<>
+                            <Button onClick={onGoBackButtonClick} content={<Link to={toInvoices()}>Go Back</Link>} extraContent="<" />
+                            <section>
                                 <section>
                                     <p>
                                         <span>Status</span>
@@ -106,8 +107,9 @@ export const InvoicePage = () => {
                                         </p>
                                     </div>
                                 </section>
-                            </>)}
-                </section>
+                            </section>
+                        </>)}
+
             </main>
             {Object.keys(invoice).length > 0 && (
                 <Form id={params.id} fetchedInvoiceState={invoice} />
