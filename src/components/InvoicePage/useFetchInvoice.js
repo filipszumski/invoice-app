@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { getInvoice } from "../../services/invoices";
 import { getInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { setStatus } from "../../store/status/status";
+import * as statusStage from "../../shared/consts/stages";
 
 export const useFetchInvoice = () => {
     const params = useParams();
@@ -14,11 +15,11 @@ export const useFetchInvoice = () => {
             try {
                 const response = await getInvoice(params.id);
                 dispatch(getInvoiceDataSuccess(response));
-                dispatch(setStatus("success"));
+                dispatch(setStatus(statusStage.success));
             }
             catch (error) {
                 console.error(error);
-                dispatch(setStatus("error"));
+                dispatch(setStatus(statusStage.error));
             }
         };
         fetchData();

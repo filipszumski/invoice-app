@@ -9,6 +9,7 @@ import { useInvoicePageButtons } from "./useInvoicePageButtons";
 import { useFetchInvoice } from "./useFetchInvoice";
 import { Link } from "react-router-dom";
 import { toInvoices } from "../../routes";
+import * as statusStage from "../../shared/consts/stages";
 
 export const InvoicePage = () => {
     useFetchInvoice();
@@ -28,9 +29,9 @@ export const InvoicePage = () => {
             <main>
                 <Button onClick={onGoBackButtonClick} content={<Link to={toInvoices()}>Go Back</Link>} extraContent="<" />
                 <section>
-                    {status.stage === "loading"
+                    {status.stage === statusStage.loading
                         ? <p>Loading in progress...</p>
-                        : status.stage === "error"
+                        : status.stage === statusStage.error
                             ? <p>Error occurred</p>
                             : (<>
                                 <section>

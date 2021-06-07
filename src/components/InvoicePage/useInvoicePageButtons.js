@@ -4,6 +4,7 @@ import { toInvoices } from "../../routes";
 import { deleteInvoice, patchInvoice } from "../../services/invoices";
 import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
+import * as statusStage from "../../shared/consts/stages";
 
 export const useInvoicePageButtons = (params, invoice) => {
     const history = useHistory();
@@ -11,34 +12,34 @@ export const useInvoicePageButtons = (params, invoice) => {
 
     const onEditButtonClick = () => dispatch(displayForm(true));
 
-    const onGoBackButtonClick = () => dispatch(setStatus("loading"));
+    const onGoBackButtonClick = () => dispatch(setStatus(statusStage.loading));
 
     const onDeleteButtonClick = (active) => dispatch(displayDeleteInvoiceAlert(active));
 
     const onDeleteInvoiceButtonClick = async () => {
         try {
-            dispatch(setStatus("loading"));
+            dispatch(setStatus(statusStage.loading));
             dispatch(displayDeleteInvoiceAlert(false));
             await deleteInvoice(params.id);
             history.push(toInvoices());
         } catch (error) {
             console.error(error);
-            dispatch(setStatus("error"));
+            dispatch(setStatus(statusStage.error));
         }
     };
 
     const markAsPaid = async () => {
         try {
-            dispatch(setStatus("loading"));
+            dispatch(setStatus(statusStage.loading));
             const response = await patchInvoice(params.id, {
                 ...invoice,
                 status: "paid",
             });
             dispatch(updateInvoiceDataSuccess(response));
-            dispatch(setStatus("success"));
+            dispatch(setStatus(statusStage.success));
         } catch (error) {
             console.error(error);
-            dispatch(setStatus("error"));
+            dispatch(setStatus(statusStage.error));
         }
     };
 

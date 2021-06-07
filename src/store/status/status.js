@@ -1,3 +1,4 @@
+import { loading } from "../../shared/consts/stages";
 const SET_STATUS = "SET_STATUS";
 const DISPLAY_FORM = "DISPLAY_FORM";
 const DISPLAY_ALERT = "DISPLAY_ALERT";
@@ -24,7 +25,7 @@ export const displayDeleteInvoiceAlert = (payload) => {
 };
 
 const initialStatus = {
-    stage: "loading",
+    stage: loading,
     overlayActive: false,
     formActive: false,
     deleteInvoiceActive: false,

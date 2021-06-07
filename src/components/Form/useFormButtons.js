@@ -6,6 +6,7 @@ import { postInvoice, patchInvoice } from "../../services/invoices";
 import { addInvoiceDataSuccess } from "../../store/invoices/invoices";
 import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { CLEAR_FORM } from "./consts";
+import * as statusStage from "../../shared/consts/stages";
 
 export const useFormButtons = (invoice, id, formStateDispatch, initialState) => {
     const dispatch = useDispatch();
@@ -47,7 +48,7 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
 
     const onSubmitInvoiceButtonClick = async (status) => {
         try {
-            dispatch(setStatus("loading"));
+            dispatch(setStatus(statusStage.loading));
             dispatch(displayForm(false));
             const response = await postInvoice({
                 ...invoice,
@@ -58,17 +59,17 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
             });
             dispatch(addInvoiceDataSuccess(response));
             formStateDispatch({ type: CLEAR_FORM, payload: initialState });
-            dispatch(setStatus("success"));
+            dispatch(setStatus(statusStage.success));
         } catch (error) {
             console.error(error);
-            dispatch(setStatus("error"));
+            dispatch(setStatus(statusStage.error));
             dispatch(displayForm(false));
         }
     };
 
     const onSubmitInvoiceUpdateButtonClick = async () => {
         try {
-            dispatch(setStatus("loading"));
+            dispatch(setStatus(statusStage.loading));
             dispatch(displayForm(false));
             const response = await patchInvoice(id, {
                 ...invoice,
@@ -76,10 +77,10 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
                 paymentDue: setPaymentDue(),
             });
             dispatch(updateInvoiceDataSuccess(response));
-            dispatch(setStatus("success"));
+            dispatch(setStatus(statusStage.success));
         } catch (error) {
             console.error(error);
-            dispatch(setStatus("error"));
+            dispatch(setStatus(statusStage.error));
             dispatch(displayForm(false));
         }
     };

@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import { toInvoice } from "../../routes";
 import { Form } from "../Form";
 import { useFetchInvoices } from "./useFetchInvoices";
+import * as statusStage from "../../shared/consts/stages";
 
 export const InvoicesPage = () => {
     useFetchInvoices();
@@ -16,9 +17,9 @@ export const InvoicesPage = () => {
     return (
         <>
             <main>
-                {status.stage === "loading"
+                {status.stage === statusStage.loading
                     ? <p>Loading in progress...</p>
-                    : status.stage === "error"
+                    : status.stage === statusStage.error
                         ? <p>Error occurred</p>
                         : (<>
                             <header>
@@ -56,7 +57,7 @@ export const InvoicesPage = () => {
                                         <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
                                     </>
                                     : invoices.map((invoice) => (
-                                        <Link onClick={() => dispatch(setStatus("loading"))} key={invoice.id} to={toInvoice(invoice.id)}>
+                                        <Link onClick={() => dispatch(setStatus(statusStage.loading))} key={invoice.id} to={toInvoice(invoice.id)}>
                                             <p key={invoice.id}>
                                                 <span>{invoice.id}</span>{ }
                                                 <span>{invoice.paymentDue}</span>
