@@ -1,8 +1,10 @@
 import { format } from "date-fns";
 import addDays from 'date-fns/addDays'
-import { displayForm, getDataActive, setStatus } from "../../store/status/status";
+import { displayForm, setStatus } from "../../store/status/status";
 import { postInvoice, patchInvoice } from "../../services/invoices";
 import { useDispatch } from "react-redux";
+import { addInvoiceDataSuccess } from "../../store/invoices/invoices";
+import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 
 export const useFormButtons = (invoice, id, formStateDispatch, initialState) => {
     const dispatch = useDispatch();
@@ -46,15 +48,16 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
         try {
             dispatch(setStatus("loading"));
             dispatch(displayForm(false));
-            formStateDispatch({ type: "clearState", payload: initialState })
-            await postInvoice({
+            const response = await postInvoice({
                 ...invoice,
                 status: status,
                 paymentDue: setPaymentDue(),
                 id: setInvoiceID(),
                 total: setInvoiceTotal(),
             });
-            dispatch(getDataActive(true));
+            dispatch(addInvoiceDataSuccess(response));
+            formStateDispatch({ type: "clearForm", payload: initialState });
+            dispatch(setStatus("success"));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
@@ -66,12 +69,13 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
         try {
             dispatch(setStatus("loading"));
             dispatch(displayForm(false));
-            await patchInvoice(id, {
+            const response = await patchInvoice(id, {
                 ...invoice,
                 total: setInvoiceTotal(),
                 paymentDue: setPaymentDue(),
             });
-            dispatch(getDataActive(true));
+            dispatch(updateInvoiceDataSuccess(response));
+            dispatch(setStatus("success"));
         } catch (error) {
             console.error(error);
             dispatch(setStatus("error"));
