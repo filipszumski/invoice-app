@@ -8,7 +8,7 @@ import { DeleteInvoiceWindow } from "./DeleteInvoiceWindow";
 import { useInvoicePageButtons } from "./useInvoicePageButtons";
 import { useFetchInvoice } from "./useFetchInvoice";
 import { Link } from "react-router-dom";
-import { toInvoices } from "../../routes";
+import { toInvoices } from "../../shared/routes";
 import * as statusStage from "../../shared/consts/stages";
 
 export const InvoicePage = () => {

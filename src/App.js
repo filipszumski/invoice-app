@@ -4,7 +4,7 @@ import { InvoicesPage } from "./components/InvoicesPage";
 import { InvoicePage } from "./components/InvoicePage";
 import { Overlay } from "./components/Overlay/styled";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-import { toInvoice, toInvoices } from "./routes";
+import { toInvoice, toInvoices } from "./shared/routes";
 
 function App() {
   const status = useSelector(state => state.status);

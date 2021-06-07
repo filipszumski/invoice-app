@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { toInvoices } from "../../routes";
+import { toInvoices } from "../../shared/routes";
 import { deleteInvoice, patchInvoice } from "../../services/invoices";
 import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { displayForm, setStatus } from "../../store/status/status";
 import { Button } from "../Button";
-import { toInvoice } from "../../routes";
+import { toInvoice } from "../../shared/routes";
 import { Form } from "../Form";
 import { useFetchInvoices } from "./useFetchInvoices";
 import * as statusStage from "../../shared/consts/stages";
