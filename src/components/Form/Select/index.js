@@ -1,9 +1,10 @@
 import React from "react";
+import { UPDATE_STATE_KEY } from "../stateActionsConsts";
 
 export const Select = ({ id, name, label, type, state, dispatch }) => {
 
     const onInputChange = ({ target }) => {
-        return dispatch({ type: "updateStateKey", payload: { target: target, type: type } })
+        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target, type: type } })
     };
     return (
         <p>

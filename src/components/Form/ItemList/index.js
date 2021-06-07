@@ -1,11 +1,12 @@
 import React from "react";
 import { Button } from "../../Button";
 import { Input } from "./Input";
+import { ADD_LIST_ITEM, DELETE_LIST_ITEM } from "../stateActionsConsts";
 
 export const ItemList = ({ invoice, dispatch }) => {
     const onAddItemListButtonChange = () => {
         return dispatch({
-            type: "addListItem", payload: {
+            type: ADD_LIST_ITEM, payload: {
                 name: "",
                 quantity: "",
                 price: "",
@@ -14,7 +15,7 @@ export const ItemList = ({ invoice, dispatch }) => {
         })
     };
 
-    const deleteListItem = (index) => dispatch({ type: "deleteListItem", payload: index });
+    const deleteListItem = (index) => dispatch({ type: DELETE_LIST_ITEM, payload: index });
 
     return (
         <section>

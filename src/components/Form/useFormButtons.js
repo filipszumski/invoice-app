@@ -1,10 +1,11 @@
 import { format } from "date-fns";
 import addDays from 'date-fns/addDays'
+import { useDispatch } from "react-redux";
 import { displayForm, setStatus } from "../../store/status/status";
 import { postInvoice, patchInvoice } from "../../services/invoices";
-import { useDispatch } from "react-redux";
 import { addInvoiceDataSuccess } from "../../store/invoices/invoices";
 import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
+import { CLEAR_FORM } from "./stateActionsConsts";
 
 export const useFormButtons = (invoice, id, formStateDispatch, initialState) => {
     const dispatch = useDispatch();
@@ -56,7 +57,7 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
                 total: setInvoiceTotal(),
             });
             dispatch(addInvoiceDataSuccess(response));
-            formStateDispatch({ type: "clearForm", payload: initialState });
+            formStateDispatch({ type: CLEAR_FORM, payload: initialState });
             dispatch(setStatus("success"));
         } catch (error) {
             console.error(error);

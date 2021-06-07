@@ -1,4 +1,5 @@
 import React from "react";
+import { UPDATE_STATE_OBJECT_KEY, UPDATE_STATE_KEY } from "../stateActionsConsts";
 
 export const Input = ({ id, name, label, type, state, dispatch, objectInStateName }) => {
     const getInputValue = () => {
@@ -10,9 +11,9 @@ export const Input = ({ id, name, label, type, state, dispatch, objectInStateNam
 
     const onInputChange = ({ target }) => {
         if (objectInStateName) {
-            return dispatch({ type: "updateStateObjectKey", payload: { target: target, objectInStateName: objectInStateName } })
+            return dispatch({ type: UPDATE_STATE_OBJECT_KEY, payload: { target: target, objectInStateName: objectInStateName } })
         }
-        return dispatch({ type: "updateStateKey", payload: { target: target, type: type } })
+        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target, type: type } })
     };
 
     return (
