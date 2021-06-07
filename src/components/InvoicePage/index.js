@@ -6,14 +6,17 @@ import { Button } from "../Button";
 import { Form } from "../Form/";
 import { DeleteInvoiceWindow } from "./DeleteInvoiceWindow";
 import { useInvoicePageButtons } from "./useInvoicePageButtons";
+import { useFetchInvoice } from "./useFetchInvoice";
+import { Link } from "react-router-dom";
+import { toInvoices } from "../../routes";
 
 export const InvoicePage = () => {
+    useFetchInvoice();
     const params = useParams();
-    const invoice = useSelector(state => state.invoices.filter(item => params.id === item.id))[0] || {};
+    const invoice = useSelector(state => state.invoice);
+    console.log(invoice);
     const [onEditButtonClick, onGoBackButtonClick, onDeleteButtonClick, onDeleteInvoiceButtonClick, markAsPaid] = useInvoicePageButtons(params, invoice);
     const status = useSelector(state => state.status);
-
-    console.log(invoice);
 
     const formatDate = (dateString) => {
         const dateArrayStrings = dateString.split("-");
@@ -23,9 +26,9 @@ export const InvoicePage = () => {
     return (
         <>
             <main>
-                <Button onClick={onGoBackButtonClick} content="Go back" extraContent="<" />
+                <Button onClick={onGoBackButtonClick} content={<Link to={toInvoices()}>Go Back</Link>} extraContent="<" />
                 <section>
-                    {status.stage === "loading" || Object.keys(invoice).length === 0
+                    {status.stage === "loading"
                         ? <p>Loading in progress...</p>
                         : status.stage === "error"
                             ? <p>Error occurred</p>

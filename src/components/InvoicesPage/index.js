@@ -1,15 +1,22 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { displayForm } from "../../store/status/status";
+import { displayForm, getDataActive, setStatus } from "../../store/status/status";
 import { Button } from "../Button";
 import { toInvoice } from "../../routes";
 import { Form } from "../Form";
+import { useFetchInvoices } from "./useFetchInvoices";
 
 export const InvoicesPage = () => {
+    useFetchInvoices();
     const status = useSelector((state) => state.status);
     const invoices = useSelector(state => state.invoices);
     const dispatch = useDispatch();
+
+    const onLInkClick = () => {
+        dispatch(setStatus("loading"));
+        dispatch(getDataActive(true));
+    };
 
     return (
         <>
@@ -54,7 +61,7 @@ export const InvoicesPage = () => {
                                         <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
                                     </>
                                     : invoices.map((invoice) => (
-                                        <Link key={invoice.id} to={toInvoice(invoice.id)}>
+                                        <Link onClick={onLInkClick} key={invoice.id} to={toInvoice(invoice.id)}>
                                             <p key={invoice.id}>
                                                 <span>{invoice.id}</span>{ }
                                                 <span>{invoice.paymentDue}</span>

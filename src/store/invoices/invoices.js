@@ -5,16 +5,15 @@ export const getInvoicesDataSuccess = (invoices) => {
         type: GET_INVOICES_DATA_SUCCESS,
         payload: invoices
     }
-}
+};
 
 const initialInvoices = [];
 
 export const invoices = (state = initialInvoices, action) => {
     switch (action.type) {
         case GET_INVOICES_DATA_SUCCESS:
-            return action.payload
+            return action.payload;
         default:
             return state;
     }
-
-}
+};

@@ -13,6 +13,8 @@ export const useForm = (id, fetchedInvoiceState) => {
         switch (type) {
             case "replaceState":
                 return payload;
+            case "clearState":
+                return payload;
             case "updateStateKey":
                 return {
                     ...state,

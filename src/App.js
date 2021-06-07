@@ -3,13 +3,10 @@ import { useSelector } from "react-redux";
 import { InvoicesPage } from "./components/InvoicesPage";
 import { InvoicePage } from "./components/InvoicePage";
 import { Overlay } from "./components/Overlay/styled";
-import { useFetchInvoices } from "./useFetchInvoices";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { toInvoice, toInvoices } from "./routes";
 
-
 function App() {
-  useFetchInvoices();
   const status = useSelector(state => state.status);
 
   return (

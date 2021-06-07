@@ -1,5 +1,5 @@
 const SET_STATUS = "SET_STATUS";
-const GET_INVOICES_ACTIVE = "GET_INVOICES_ACTIVE";
+const GET_DATA_ACTIVE = "GET_DATA_ACTIVE";
 const DISPLAY_FORM = "DISPLAY_FORM";
 const DISPLAY_ALERT = "DISPLAY_ALERT";
 
@@ -10,12 +10,12 @@ export const setStatus = (payload) => {
     }
 };
 
-export const getInvoicesActive = (payload) => {
+export const getDataActive = (payload) => {
     return {
-        type: GET_INVOICES_ACTIVE,
+        type: GET_DATA_ACTIVE,
         payload: payload
     }
-}
+};
 
 export const displayForm = (payload) => {
     return {
@@ -33,12 +33,11 @@ export const displayDeleteInvoiceAlert = (payload) => {
 
 const initialStatus = {
     stage: "loading",
-    getInvoicesActive: true,
+    getDataActive: true,
     overlayActive: false,
     formActive: false,
     deleteInvoiceActive: false,
 };
-
 
 export const status = (state = initialStatus, action) => {
     switch (action.type) {
@@ -47,10 +46,10 @@ export const status = (state = initialStatus, action) => {
                 ...state,
                 stage: action.payload,
             };
-        case GET_INVOICES_ACTIVE:
+        case GET_DATA_ACTIVE:
             return {
                 ...state,
-                getInvoicesActive: action.payload,
+                getDataActive: action.payload,
             };
         case DISPLAY_FORM:
             return {
