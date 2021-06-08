@@ -1,4 +1,3 @@
-import { logDOM } from "@testing-library/dom";
 import React, { useEffect, useRef, useState } from "react";
 import { Wrapper, Options, Button } from "./styled";
 
