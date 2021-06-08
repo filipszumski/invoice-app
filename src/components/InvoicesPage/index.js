@@ -7,7 +7,7 @@ import { toInvoice } from "../../shared/routes";
 import { Form } from "../Form";
 import { useFetchInvoices } from "./useFetchInvoices";
 import * as statusStage from "../../shared/consts/stages";
-import { Filter } from "../Filter";
+import { Filter } from "./Filter";
 
 export const InvoicesPage = () => {
     useFetchInvoices();
