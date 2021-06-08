@@ -13,8 +13,6 @@ export const InvoicePage = () => {
     const [onEditButtonClick, onGoBackButtonClick, onDeleteButtonClick, onDeleteInvoiceButtonClick, markAsPaid] = useInvoicePageButtons(params, invoice);
     const status = useSelector(state => state.status);
 
-    console.log(invoice);
-
     const formatDate = (dateString) => {
         const dateArrayStrings = dateString.split("-");
         const dateArrayNumbers = dateArrayStrings.map(item => parseInt(item, 10));

@@ -13,8 +13,6 @@ export const Form = ({ id, fetchedInvoiceState }) => {
     const [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick] = useFormButtons(invoice, id);
     const status = useSelector(state => state.status);
 
-    console.log(invoice);
-
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }

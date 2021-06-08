@@ -9,7 +9,6 @@ export const useFetchInvoices = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("Fetch Invoices Effect");
         const fetchData = async () => {
             try {
                 const response = await getInvoices();
@@ -24,7 +23,6 @@ export const useFetchInvoices = () => {
         };
 
         if (!status.getInvoicesActive) {
-            console.log("Fectch Invoice Effect RETURN");
             return;
         }
 
