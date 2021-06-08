@@ -16,7 +16,6 @@ export const InvoicePage = () => {
     useFetchInvoice();
     const params = useParams();
     const invoice = useSelector(state => state.invoice);
-    console.log(invoice);
     const [onEditButtonClick, onGoBackButtonClick, onDeleteButtonClick, onDeleteInvoiceButtonClick, markAsPaid] = useInvoicePageButtons(params, invoice);
     const status = useSelector(state => state.status);
 
