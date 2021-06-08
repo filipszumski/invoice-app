@@ -1,20 +1,20 @@
 import { Button } from "../../Button";
 
-export const Buttons = ({ id, onSubmitButtonClick }) => {
+export const Buttons = ({ id, onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick }) => {
 
     return (
         <section>
             {id ?
                 <>
-                    <Button type="button" onClick={(e) => onSubmitButtonClick(e)} content={"Cancel"} />
-                    <Button type="button" onClick={(e) => onSubmitButtonClick(e)} content={"Save Changes"} />
+                    <Button type="button" onClick={onCloseFormButtonClick} content={"Cancel"} />
+                    <Button type="button" onClick={onSubmitInvoiceUpdateButtonClick} content={"Save Changes"} />
                 </>
                 :
                 <>
-                    < Button onClick={(e) => onSubmitButtonClick(e)} type="button" content={"Discard"} />
+                    < Button onClick={onCloseFormButtonClick} type="button" content={"Discard"} />
                     <div>
-                        <Button type="button" onClick={(e) => onSubmitButtonClick(e, "draft")} content={"Save as Draft"} />
-                        <Button type="button" onClick={(e) => onSubmitButtonClick(e, "pending")} content={"Save & Send"} />
+                        <Button type="button" onClick={() => onSubmitInvoiceButtonClick("draft")} content={"Save as Draft"} />
+                        <Button type="button" onClick={() => onSubmitInvoiceButtonClick("pending")} content={"Save & Send"} />
                     </div>
                 </>
 

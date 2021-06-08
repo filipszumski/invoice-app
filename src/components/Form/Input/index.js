@@ -1,7 +1,7 @@
 import React from "react";
+import { UPDATE_STATE_OBJECT_KEY, UPDATE_STATE_KEY } from "../consts";
 
-export const Input = ({ htmlEl, id, name, label, type, state, dispatch, objectInStateName }) => {
-
+export const Input = ({ id, name, label, type, state, dispatch, objectInStateName }) => {
     const getInputValue = () => {
         if (objectInStateName) {
             return state[objectInStateName][name];
@@ -10,32 +10,11 @@ export const Input = ({ htmlEl, id, name, label, type, state, dispatch, objectIn
     };
 
     const onInputChange = ({ target }) => {
-
         if (objectInStateName) {
-            return dispatch({ type: "updateStateObjectKey", payload: { target: target, objectInStateName: objectInStateName } })
+            return dispatch({ type: UPDATE_STATE_OBJECT_KEY, payload: { target: target, objectInStateName: objectInStateName } })
         }
-        return dispatch({ type: "updateStateKey", payload: { target: target, type: type } })
-
+        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target, type: type } })
     };
-
-    if (htmlEl === "select") {
-        return (
-            <p>
-                <label htmlFor={id}>Payment Terms</label>
-                <select
-                    id={id}
-                    name={name}
-                    value={getInputValue()}
-                    onChange={onInputChange}
-                >
-                    <option value="1">Net 1 day</option>
-                    <option value="7">Net 7 days</option>
-                    <option value="14">Net 14 days</option>
-                    <option value="30">Net 30 days</option>
-                </select>
-            </p>
-        )
-    }
 
     return (
         <p>
@@ -49,4 +28,4 @@ export const Input = ({ htmlEl, id, name, label, type, state, dispatch, objectIn
             />
         </p>
     )
-}
+};

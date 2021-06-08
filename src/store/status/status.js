@@ -1,7 +1,7 @@
+import { loading } from "../../shared/consts/stages";
 const SET_STATUS = "SET_STATUS";
 const DISPLAY_FORM = "DISPLAY_FORM";
 const DISPLAY_ALERT = "DISPLAY_ALERT";
-const GET_INVOICES_ACTIVE = "GET_INVOICES_ACTIVE";
 
 export const setStatus = (payload) => {
     return {
@@ -24,21 +24,12 @@ export const displayDeleteInvoiceAlert = (payload) => {
     }
 };
 
-export const getInvoicesActive = (payload) => {
-    return {
-        type: GET_INVOICES_ACTIVE,
-        payload: payload
-    }
-};
-
 const initialStatus = {
-    stage: "loading",
-    getInvoicesActive: true,
+    stage: loading,
     overlayActive: false,
     formActive: false,
     deleteInvoiceActive: false,
 };
-
 
 export const status = (state = initialStatus, action) => {
     switch (action.type) {
@@ -58,11 +49,6 @@ export const status = (state = initialStatus, action) => {
                 ...state,
                 deleteInvoiceActive: action.payload,
                 overlayActive: action.payload,
-            };
-        case GET_INVOICES_ACTIVE:
-            return {
-                ...state,
-                getInvoicesActive: action.payload,
             };
         default:
             return state;

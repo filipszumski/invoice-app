@@ -1,66 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { displayForm } from "../../store/status/status";
+import { displayForm, setStatus } from "../../store/status/status";
 import { Button } from "../Button";
-import { toInvoice } from "../../routes"
+import { toInvoice } from "../../shared/routes";
 import { Form } from "../Form";
+import { useFetchInvoices } from "./useFetchInvoices";
+import * as statusStage from "../../shared/consts/stages";
+import { Filter } from "./Filter";
 
 export const InvoicesPage = () => {
-    const status = useSelector((state) => state.status);
-    const invoices = useSelector(state => state.invoices);
-    const dispatch = useDispatch();
+    useFetchInvoices();
+    const [filters, setFilters] = useState([
+        { id: 0, type: "checkbox", name: "draft", label: "Draft", checked: false },
+        { id: 1, type: "checkbox", name: "pending", label: "Pending", checked: false },
+        { id: 2, type: "checkbox", name: "paid", label: "Paid", checked: false },
+    ]);
 
-    const onNewInvoiceButtonClick = () => dispatch(displayForm(true));
+    const status = useSelector((state) => state.status);
+    const dispatch = useDispatch();
+    const filtredInvoices = useSelector(state => {
+        const invoices = state.invoices;
+        const checkedFilters = (filters.filter(item => item.checked)).map(object => object.name);
+
+        if (checkedFilters.length === 0) {
+            return invoices;
+        }
+        return invoices.filter(invoice => checkedFilters.includes(invoice.status));
+    });
 
     return (
         <>
             <main>
-                <header>
-                    <div>
-                        <h1>Invoices</h1>
-                        <p>There are {invoices.length} total invoices</p>
-                        {/* or no incove text */}
-                    </div>
-                    <div>
-                        <div>
-                            <select>
-                                <option disabled hidden>Filter by status</option>
-                            </select>
-                            <div>
-                                <p>
-                                    <label htmlFor="draft">Draft</label>
-                                    <input id="draft" type="checkbox" name="draft" />
-                                </p>
-                                <p>
-                                    <label htmlFor="prending">Pending</label>
-                                    <input id="prending" type="checkbox" name="prending" />
-                                </p>
-                                <p>
-                                    <label htmlFor="paid">Paid</label>
-                                    <input id="paid" type="checkbox" name="paid" />
-                                </p>
-                            </div>
-                        </div>
-                        {/* add + image */}
-                        <Button onClick={onNewInvoiceButtonClick} content="New Invoice" extraContent="+" />
-                    </div>
-                </header>
-
-                {/*   No invoices  */}
-                <section>
-                    {status.stage === "loading"
-                        ? <p>Loading in progress...</p>
-                        : status.stage === "error"
-                            ? <p>Error occurred</p>
-                            : (
-                                invoices.length === 0
+                {status.stage === statusStage.loading
+                    ? <p>Loading in progress...</p>
+                    : status.stage === statusStage.error
+                        ? <p>Error occurred</p>
+                        : (<>
+                            <header>
+                                <div>
+                                    <h1>Invoices</h1>
+                                    <p>{filtredInvoices.length ? `There are ${filtredInvoices.length} total invoices` : "No invoices"}</p>
+                                </div>
+                                <div>
+                                    <Filter filters={filters} setFilters={setFilters} />
+                                    <Button onClick={() => dispatch(displayForm(true))} content="New Invoice" extraContent="+" />
+                                </div>
+                            </header>
+                            <section>
+                                {filtredInvoices.length === 0
                                     ? <>
                                         <h2>There is nothing here</h2>
                                         <p>Create an invoice by clicking the <strong>New Invoice</strong> button and get started</p>
                                     </>
-                                    : invoices.map((invoice) => (
-                                        <Link key={invoice.id} to={toInvoice(invoice.id)}>
+                                    : filtredInvoices.map((invoice) => (
+                                        <Link onClick={() => dispatch(setStatus(statusStage.loading))} key={invoice.id} to={toInvoice(invoice.id)}>
                                             <p key={invoice.id}>
                                                 <span>{invoice.id}</span>{ }
                                                 <span>{invoice.paymentDue}</span>
@@ -69,13 +63,11 @@ export const InvoicesPage = () => {
                                                 <span>{invoice.status}</span>
                                             </p>
                                         </Link>
-                                    ))
-                            )}
-                </section>
-                {/* <!-- No invoices end --> */}
-                {/* or invoices List */}
+                                    ))}
+                            </section>
+                        </>)}
             </main>
             <Form />
         </>
     )
-}
+};
