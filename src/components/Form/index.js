@@ -7,12 +7,13 @@ import { StyledForm } from "./styled";
 import { ItemList } from "./ItemList";
 import { useForm } from "./useForm";
 import { useFormButtons } from "./useFormButtons";
+import { initialState } from "./initialState";
 
 export const Form = ({ id, fetchedInvoiceState }) => {
     const [invoice, dispatch] = useForm(id, fetchedInvoiceState);
-    const [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick] = useFormButtons(invoice, id);
+    const [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick] = useFormButtons(invoice, id, dispatch, initialState);
     const status = useSelector(state => state.status);
-
+    
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }

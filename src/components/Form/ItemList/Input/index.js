@@ -1,10 +1,11 @@
 import React from "react";
+import { UPDATE_LIST_ITEM_OBJECT_KEY, UPDATE_LIST_ITEM_OBJECT_KEY_ON_INPUT_BLUR } from "../../consts";
 
 export const Input = ({ name, type, liIndex, liItem, dispatch, blur }) => {
     const onInputChange = ({ target }) => {
 
         dispatch({
-            type: "updateListItemObjectKey", payload: {
+            type: UPDATE_LIST_ITEM_OBJECT_KEY, payload: {
                 target: target,
                 index: liIndex
             }
@@ -16,7 +17,7 @@ export const Input = ({ name, type, liIndex, liItem, dispatch, blur }) => {
             return;
         }
         dispatch({
-            type: "updateListItemObjectKeyOnInputBlur", payload: {
+            type: UPDATE_LIST_ITEM_OBJECT_KEY_ON_INPUT_BLUR, payload: {
                 target: target,
                 index: liIndex
             }

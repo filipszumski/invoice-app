@@ -6,10 +6,17 @@ import { Button } from "../Button";
 import { Form } from "../Form/";
 import { DeleteInvoiceWindow } from "./DeleteInvoiceWindow";
 import { useInvoicePageButtons } from "./useInvoicePageButtons";
+import { useFetchInvoice } from "./useFetchInvoice";
+import { Link } from "react-router-dom";
+import { toInvoices } from "../../shared/routes";
+import * as statusStage from "../../shared/consts/stages";
+import { paidStatus } from "./consts";
 
 export const InvoicePage = () => {
+    useFetchInvoice();
     const params = useParams();
-    const invoice = useSelector(state => state.invoices.filter(item => params.id === item.id))[0] || {};
+    const invoice = useSelector(state => state.invoice);
+    console.log(invoice);
     const [onEditButtonClick, onGoBackButtonClick, onDeleteButtonClick, onDeleteInvoiceButtonClick, markAsPaid] = useInvoicePageButtons(params, invoice);
     const status = useSelector(state => state.status);
 
@@ -21,13 +28,14 @@ export const InvoicePage = () => {
     return (
         <>
             <main>
-                <Button onClick={onGoBackButtonClick} content="Go back" extraContent="<" />
-                <section>
-                    {status.stage === "loading" || Object.keys(invoice).length === 0
-                        ? <p>Loading in progress...</p>
-                        : status.stage === "error"
-                            ? <p>Error occurred</p>
-                            : (<>
+
+                {status.stage === statusStage.loading
+                    ? <p>Loading in progress...</p>
+                    : status.stage === statusStage.error
+                        ? <p>Error occurred</p>
+                        : (<>
+                            <Button onClick={onGoBackButtonClick} content={<Link to={toInvoices()}>Go Back</Link>} extraContent="<" />
+                            <section>
                                 <section>
                                     <p>
                                         <span>Status</span>
@@ -36,7 +44,7 @@ export const InvoicePage = () => {
                                     <p>
                                         <Button onClick={onEditButtonClick} content="Edit" />
                                         <Button onClick={() => onDeleteButtonClick(true)} content="Delete" />
-                                        {invoice.status !== "paid" && <Button onClick={markAsPaid} content="Mark as Paid" />}
+                                        {invoice.status !== paidStatus && <Button onClick={markAsPaid} content="Mark as Paid" />}
                                     </p>
                                 </section>
                                 <section>
@@ -99,8 +107,9 @@ export const InvoicePage = () => {
                                         </p>
                                     </div>
                                 </section>
-                            </>)}
-                </section>
+                            </section>
+                        </>)}
+
             </main>
             {Object.keys(invoice).length > 0 && (
                 <Form id={params.id} fetchedInvoiceState={invoice} />

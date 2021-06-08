@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import { initialState } from "./initialState";
+import * as stateActions from "./consts";
 
 export const useForm = (id, fetchedInvoiceState) => {
     const init = (initialState) => {
@@ -11,14 +12,16 @@ export const useForm = (id, fetchedInvoiceState) => {
 
     const reducer = (state, { type, payload }) => {
         switch (type) {
-            case "replaceState":
+            case stateActions.REPLACE_STATE:
                 return payload;
-            case "updateStateKey":
+            case stateActions.CLEAR_FORM:
+                return payload;
+            case stateActions.UPDATE_STATE_KEY:
                 return {
                     ...state,
                     [payload.target.name]: payload.type === "number" ? +payload.target.value : payload.target.value
                 };
-            case "updateStateObjectKey":
+            case stateActions.UPDATE_STATE_OBJECT_KEY:
                 return {
                     ...state,
                     [payload.objectInStateName]: {
@@ -26,7 +29,7 @@ export const useForm = (id, fetchedInvoiceState) => {
                         [payload.target.name]: payload.target.type === "number" ? +payload.target.value : payload.target.value
                     }
                 };
-            case "addListItem":
+            case stateActions.ADD_LIST_ITEM:
                 return {
                     ...state,
                     items: [
@@ -34,12 +37,12 @@ export const useForm = (id, fetchedInvoiceState) => {
                         { name: "", quantity: "", price: "", total: "" }
                     ]
                 };
-            case "deleteListItem":
+            case stateActions.DELETE_LIST_ITEM:
                 return {
                     ...state,
                     items: state.items.filter((item, index) => index !== payload)
                 };
-            case "updateListItemObjectKey":
+            case stateActions.UPDATE_LIST_ITEM_OBJECT_KEY:
                 return {
                     ...state,
                     items: state.items.map((item, index) => {
@@ -52,7 +55,7 @@ export const useForm = (id, fetchedInvoiceState) => {
                         return { ...item }
                     })
                 };
-            case "updateListItemObjectKeyOnInputBlur":
+            case stateActions.UPDATE_LIST_ITEM_OBJECT_KEY_ON_INPUT_BLUR:
                 return {
                     ...state,
                     items: state.items.map((item, index) => {

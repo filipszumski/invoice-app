@@ -1,43 +1,46 @@
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { toInvoices } from "../../routes";
+import { toInvoices } from "../../shared/routes";
 import { deleteInvoice, patchInvoice } from "../../services/invoices";
-import { displayForm, displayDeleteInvoiceAlert, setStatus, getInvoicesActive } from "../../store/status/status";
+import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
+import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
+import * as statusStage from "../../shared/consts/stages";
+import { paidStatus } from "./consts";
 
 export const useInvoicePageButtons = (params, invoice) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const onEditButtonClick = () => dispatch(displayForm(true))
+    const onEditButtonClick = () => dispatch(displayForm(true));
 
-    const onGoBackButtonClick = () => history.goBack();
+    const onGoBackButtonClick = () => dispatch(setStatus(statusStage.loading));
 
     const onDeleteButtonClick = (active) => dispatch(displayDeleteInvoiceAlert(active));
 
     const onDeleteInvoiceButtonClick = async () => {
         try {
-            dispatch(setStatus("loading"));
+            dispatch(setStatus(statusStage.loading));
             dispatch(displayDeleteInvoiceAlert(false));
-            history.push(toInvoices());
             await deleteInvoice(params.id);
-            dispatch(getInvoicesActive(true));
+            history.push(toInvoices());
         } catch (error) {
             console.error(error);
-            dispatch(setStatus("error"));
+            dispatch(setStatus(statusStage.error));
         }
     };
 
     const markAsPaid = async () => {
         try {
-            dispatch(setStatus("loading"));
-            await patchInvoice(params.id, {
+            dispatch(setStatus(statusStage.loading));
+            const response = await patchInvoice(params.id, {
                 ...invoice,
-                status: "paid",
+                status: paidStatus,
             });
-            dispatch(getInvoicesActive(true));
+            dispatch(updateInvoiceDataSuccess(response));
+            dispatch(setStatus(statusStage.success));
         } catch (error) {
             console.error(error);
-            dispatch(setStatus("error"));
+            dispatch(setStatus(statusStage.error));
         }
     };
 
