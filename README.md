@@ -1,6 +1,51 @@
-# Getting Started with Create React App
+# Invoice app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Description
+
+This is application for invoices management. The application allows user to create, read, update, and delete invoices. User is able to save draft invoices, and mark pending invoices as paid. There is also posibility of filtering invoices by status (draft/pending/paid).
+
+The application is still in development. Additional features i would like to add is form validation, styling with two themes(light/dark).
+## Technologies used
+
+- HTML
+- CSS
+- JavaScript ES6+
+- React
+- Redux, React-Redux
+- React Router
+- Styled Components
+- create-react-app
+- npm
+- Webpack
+- Babel
+- axios
+- json-server
+
+## Setup
+
+To run this project using mocked API, install it locally using npm:</br>
+```
+cd ../invoice-app-main
+npm install
+npm run api
+npm start
+```
+## Features
+
+- Creating, reading, updating, deleteing invoices
+- Saving draft invoices, and marking pending invoices as paid
+- Filtering invoices by status (draft/pending/paid)
+
+## My other projects
+
+- [Tasks List](https://github.com/filipszumski/tasks-list)
+- [Currency Converter](https://github.com/filipszumski/currency-converter)
+- [Tasks List React](https://github.com/filipszumski/tasks-list-react)
+- [Currency Converter And Data](https://github.com/filipszumski/currency-converter-and-data-react)
+- [Crowdfunding Product Page](https://github.com/filipszumski/crowdfunding-product-page)
+- [REST Countries API With Theme Switcher](https://github.com/filipszumski/rest-countries-api-with-color-theme-switcher)
 
 ## Available Scripts
 
@@ -18,6 +63,12 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `npm run api`
+
+Launches JSON server as local API for test purposes.\
+The script sets local JSON file to get data from, port, id, and delay to simulate real server delay.
+
+See the section about [json-server](https://www.npmjs.com/package/json-server) for more information.
 
 ### `npm run build`
 
