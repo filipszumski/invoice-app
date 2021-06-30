@@ -3,8 +3,6 @@ import addDays from 'date-fns/addDays'
 import { useDispatch } from "react-redux";
 import { displayForm, setStatus } from "../../store/status/status";
 import { postInvoice, patchInvoice } from "../../services/invoices";
-import { addInvoiceDataSuccess } from "../../store/invoices/invoices";
-import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { CLEAR_FORM } from "./consts";
 import * as statusStage from "../../shared/consts/stages";
 
@@ -48,18 +46,16 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
 
     const onSubmitInvoiceButtonClick = async (status) => {
         try {
-            dispatch(setStatus(statusStage.loading));
-            dispatch(displayForm(false));
-            const response = await postInvoice({
+            await postInvoice({
                 ...invoice,
                 status: status,
                 paymentDue: setPaymentDue(),
                 id: setInvoiceID(),
                 total: setInvoiceTotal(),
             });
-            dispatch(addInvoiceDataSuccess(response));
+            dispatch(setStatus(statusStage.loading));
+            dispatch(displayForm(false));
             formStateDispatch({ type: CLEAR_FORM, payload: initialState });
-            dispatch(setStatus(statusStage.success));
         } catch (error) {
             console.error(error);
             dispatch(setStatus(statusStage.error));
@@ -69,15 +65,13 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
 
     const onSubmitInvoiceUpdateButtonClick = async () => {
         try {
-            dispatch(setStatus(statusStage.loading));
-            dispatch(displayForm(false));
-            const response = await patchInvoice(id, {
+            await patchInvoice(id, {
                 ...invoice,
                 total: setInvoiceTotal(),
                 paymentDue: setPaymentDue(),
             });
-            dispatch(updateInvoiceDataSuccess(response));
-            dispatch(setStatus(statusStage.success));
+            dispatch(setStatus(statusStage.loading));
+            dispatch(displayForm(false));
         } catch (error) {
             console.error(error);
             dispatch(setStatus(statusStage.error));
@@ -85,10 +79,14 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
         }
     };
 
-    const onCloseFormButtonClick = () => {
-        formStateDispatch({ type: CLEAR_FORM, payload: initialState });
+    const onCancelButtonClick = () => {
         dispatch(displayForm(false));
     };
 
-    return [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick];
+    const onDiscardChangesButtonClick = () => {
+        dispatch(displayForm(false));
+        formStateDispatch({ type: CLEAR_FORM, payload: initialState });
+    };
+
+    return [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCancelButtonClick, onDiscardChangesButtonClick];
 }
