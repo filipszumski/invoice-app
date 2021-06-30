@@ -110,7 +110,7 @@ export const InvoicePage = () => {
                         </>)}
 
             </main>
-            {Object.keys(invoice).length > 0 && (
+            {Object.keys(invoice).length > 0 && status.stage === statusStage.success && (
                 <Form id={params.id} fetchedInvoiceState={invoice} />
             )}
             <DeleteInvoiceWindow

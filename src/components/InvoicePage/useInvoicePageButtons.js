@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { toInvoices } from "../../shared/routes";
 import { deleteInvoice, patchInvoice } from "../../services/invoices";
-import { updateInvoiceDataSuccess } from "../../store/invoice/invoice";
 import { displayForm, displayDeleteInvoiceAlert, setStatus } from "../../store/status/status";
 import * as statusStage from "../../shared/consts/stages";
 import { paidStatus } from "./consts";
@@ -19,10 +18,10 @@ export const useInvoicePageButtons = (params, invoice) => {
 
     const onDeleteInvoiceButtonClick = async () => {
         try {
-            dispatch(setStatus(statusStage.loading));
-            dispatch(displayDeleteInvoiceAlert(false));
             await deleteInvoice(params.id);
             history.push(toInvoices());
+            dispatch(setStatus(statusStage.loading));
+            dispatch(displayDeleteInvoiceAlert(false));
         } catch (error) {
             console.error(error);
             dispatch(setStatus(statusStage.error));
@@ -31,13 +30,11 @@ export const useInvoicePageButtons = (params, invoice) => {
 
     const markAsPaid = async () => {
         try {
-            dispatch(setStatus(statusStage.loading));
-            const response = await patchInvoice(params.id, {
+            await patchInvoice(params.id, {
                 ...invoice,
                 status: paidStatus,
             });
-            dispatch(updateInvoiceDataSuccess(response));
-            dispatch(setStatus(statusStage.success));
+            dispatch(setStatus(statusStage.loading));
         } catch (error) {
             console.error(error);
             dispatch(setStatus(statusStage.error));
