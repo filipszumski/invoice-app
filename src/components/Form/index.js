@@ -11,9 +11,12 @@ import { initialState } from "./initialState";
 
 export const Form = ({ id, fetchedInvoiceState }) => {
     const [invoice, dispatch] = useForm(id, fetchedInvoiceState);
-    const [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCloseFormButtonClick] = useFormButtons(invoice, id, dispatch, initialState);
+    const [onSubmitInvoiceButtonClick,
+        onSubmitInvoiceUpdateButtonClick,
+        onCancelButtonClick,
+        onDiscardChangesButtonClick] = useFormButtons(invoice, id, dispatch, initialState);
     const status = useSelector(state => state.status);
-    
+
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
@@ -160,7 +163,8 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                 id={id}
                 onSubmitInvoiceButtonClick={onSubmitInvoiceButtonClick}
                 onSubmitInvoiceUpdateButtonClick={onSubmitInvoiceUpdateButtonClick}
-                onCloseFormButtonClick={onCloseFormButtonClick}
+                onCancelButtonClick={onCancelButtonClick}
+                onDiscardChangesButtonClick={onDiscardChangesButtonClick}
             />
         </StyledForm>
     )
