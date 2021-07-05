@@ -44,38 +44,41 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
         return sum;
     };
 
-    const onSubmitInvoiceButtonClick = async (status) => {
-        try {
-            await postInvoice({
-                ...invoice,
-                status: status,
-                paymentDue: setPaymentDue(),
-                id: setInvoiceID(),
-                total: setInvoiceTotal(),
-            });
-            dispatch(setStatus(statusStage.loading));
-            dispatch(displayForm(false));
-            formStateDispatch({ type: CLEAR_FORM, payload: initialState });
-        } catch (error) {
-            console.error(error);
-            dispatch(setStatus(statusStage.error));
-            dispatch(displayForm(false));
-        }
-    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const status = e.nativeEvent.submitter.dataset.status;
 
-    const onSubmitInvoiceUpdateButtonClick = async () => {
-        try {
-            await patchInvoice(id, {
-                ...invoice,
-                total: setInvoiceTotal(),
-                paymentDue: setPaymentDue(),
-            });
-            dispatch(setStatus(statusStage.loading));
-            dispatch(displayForm(false));
-        } catch (error) {
-            console.error(error);
-            dispatch(setStatus(statusStage.error));
-            dispatch(displayForm(false));
+        if (id) {
+            try {
+                await patchInvoice(id, {
+                    ...invoice,
+                    total: setInvoiceTotal(),
+                    paymentDue: setPaymentDue(),
+                });
+                dispatch(setStatus(statusStage.loading));
+                dispatch(displayForm(false));
+            } catch (error) {
+                console.error(error);
+                dispatch(setStatus(statusStage.error));
+                dispatch(displayForm(false));
+            }
+        } else {
+            try {
+                await postInvoice({
+                    ...invoice,
+                    status: status,
+                    paymentDue: setPaymentDue(),
+                    id: setInvoiceID(),
+                    total: setInvoiceTotal(),
+                });
+                dispatch(setStatus(statusStage.loading));
+                dispatch(displayForm(false));
+                formStateDispatch({ type: CLEAR_FORM, payload: initialState });
+            } catch (error) {
+                console.error(error);
+                dispatch(setStatus(statusStage.error));
+                dispatch(displayForm(false));
+            }
         }
     };
 
@@ -88,5 +91,5 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
         formStateDispatch({ type: CLEAR_FORM, payload: initialState });
     };
 
-    return [onSubmitInvoiceButtonClick, onSubmitInvoiceUpdateButtonClick, onCancelButtonClick, onDiscardChangesButtonClick];
+    return [handleSubmit, onCancelButtonClick, onDiscardChangesButtonClick];
 }
