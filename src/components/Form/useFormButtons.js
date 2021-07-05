@@ -34,7 +34,13 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
     };
 
     const setInvoiceTotal = () => {
-        const itemListTotalArray = invoice.items.map(item => item.total);
+        const itemsList = invoice.items;
+
+        if (!itemsList.length) {
+            return "";
+        }
+
+        const itemListTotalArray = itemsList.map(item => item.total);
         let sum = 0;
 
         for (let i = 0; i < itemListTotalArray.length; i++) {
