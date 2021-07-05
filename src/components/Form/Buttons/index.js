@@ -2,24 +2,23 @@ import { Button } from "../../Button";
 
 export const Buttons = ({
     id,
-    onSubmitInvoiceButtonClick,
-    onSubmitInvoiceUpdateButtonClick,
     onCancelButtonClick,
-    onDiscardChangesButtonClick
+    onDiscardChangesButtonClick,
+    setIsValidation
 }) => {
     return (
         <section>
             {id ?
                 <>
                     <Button type="button" onClick={onCancelButtonClick} content={"Cancel"} />
-                    <Button type="button" onClick={onSubmitInvoiceUpdateButtonClick} content={"Save Changes"} />
+                    <Button type="submit" content={"Save Changes"} />
                 </>
                 :
                 <>
-                    < Button onClick={onDiscardChangesButtonClick} type="button" content={"Discard"} />
+                    < Button type="button" onClick={onDiscardChangesButtonClick} content={"Discard"} />
                     <div>
-                        <Button type="button" onClick={() => onSubmitInvoiceButtonClick("draft")} content={"Save as Draft"} />
-                        <Button type="button" onClick={() => onSubmitInvoiceButtonClick("pending")} content={"Save & Send"} />
+                        <Button type="submit" onClick={() => setIsValidation(false)} content={"Save as Draft"} status={"draft"} />
+                        <Button type="submit" onClick={() => setIsValidation(true)} content={"Save & Send"} status={"pending"} />
                     </div>
                 </>
 
