@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Buttons } from "./Buttons";
 import { Input } from "./Input";
@@ -11,8 +11,9 @@ import { initialState } from "./initialState";
 
 export const Form = ({ id, fetchedInvoiceState }) => {
     const [invoice, dispatch] = useForm(id, fetchedInvoiceState);
-    const [onSubmitInvoiceButtonClick,
-        onSubmitInvoiceUpdateButtonClick,
+    const [isValidation, setIsValidation] = useState(false);
+    const [
+        handleSubmit,
         onCancelButtonClick,
         onDiscardChangesButtonClick] = useFormButtons(invoice, id, dispatch, initialState);
     const status = useSelector(state => state.status);
@@ -20,7 +21,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
     return (
         // {/* <!-- Create new invoice form --> */ }
         //   {/* <button>Go Back</button> - mobile*/ }
-        <StyledForm active={status.formActive}>
+        <StyledForm active={status.formActive} onSubmit={handleSubmit}>
             <h2>New Invoice</h2>
             <section>
                 <fieldset>
@@ -33,6 +34,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         state={invoice}
                         dispatch={dispatch}
                         objectInStateName="senderAddress"
+                        isValidation={isValidation}
                     />
                     <div>
                         <Input
@@ -43,6 +45,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="senderAddress"
+                            isValidation={isValidation}
 
                         />
                         {/* pattern */}
@@ -54,7 +57,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="senderAddress"
-
+                            isValidation={isValidation}
                         />
                         <Input
                             id="sendersCountry"
@@ -64,7 +67,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="senderAddress"
-
+                            isValidation={isValidation}
                         />
                     </div>
                 </fieldset>
@@ -78,6 +81,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         type="text"
                         state={invoice}
                         dispatch={dispatch}
+                        isValidation={isValidation}
                     />
                     <Input
                         id="clientsEmail"
@@ -86,6 +90,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         type="email"
                         state={invoice}
                         dispatch={dispatch}
+                        isValidation={isValidation}
                     />
                     <Input
                         id="clientsStreetAdress"
@@ -95,6 +100,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         state={invoice}
                         dispatch={dispatch}
                         objectInStateName="clientAddress"
+                        isValidation={isValidation}
                     />
                     <div>
                         <Input
@@ -105,6 +111,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="clientAddress"
+                            isValidation={isValidation}
                         />
                         {/* pattern */}
                         <Input
@@ -115,6 +122,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="clientAddress"
+                            isValidation={isValidation}
                         />
                         <Input
                             id="clientsCountry"
@@ -124,6 +132,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                             state={invoice}
                             dispatch={dispatch}
                             objectInStateName="clientAddress"
+                            isValidation={isValidation}
                         />
                     </div>
                 </fieldset>
@@ -138,6 +147,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         state={invoice}
                         dispatch={dispatch}
                         blur={true}
+                        isValidation={isValidation}
                     />
                     <Select
                         id="paymentTerms"
@@ -147,6 +157,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                         state={invoice}
                         dispatch={dispatch}
                         blur={true}
+                        isValidation={isValidation}
                     />
                 </div>
                 <Input
@@ -156,15 +167,19 @@ export const Form = ({ id, fetchedInvoiceState }) => {
                     type="text"
                     state={invoice}
                     dispatch={dispatch}
+                    isValidation={isValidation}
                 />
             </section>
-            <ItemList invoice={invoice} dispatch={dispatch} />
+            <ItemList
+                invoice={invoice}
+                dispatch={dispatch}
+                isValidation={isValidation}
+            />
             <Buttons
                 id={id}
-                onSubmitInvoiceButtonClick={onSubmitInvoiceButtonClick}
-                onSubmitInvoiceUpdateButtonClick={onSubmitInvoiceUpdateButtonClick}
                 onCancelButtonClick={onCancelButtonClick}
                 onDiscardChangesButtonClick={onDiscardChangesButtonClick}
+                setIsValidation={setIsValidation}
             />
         </StyledForm>
     )
