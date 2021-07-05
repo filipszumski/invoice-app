@@ -11,7 +11,7 @@ export const Buttons = ({
             {id ?
                 <>
                     <Button type="button" onClick={onCancelButtonClick} content={"Cancel"} />
-                    <Button type="submit" content={"Save Changes"} />
+                    <Button type="submit" onClick={() => setIsValidation(true)} content={"Save Changes"} />
                 </>
                 :
                 <>

@@ -18,7 +18,6 @@ export const InvoicePage = () => {
     const invoice = useSelector(state => state.invoice);
     const [onEditButtonClick, onGoBackButtonClick, onDeleteButtonClick, onDeleteInvoiceButtonClick, markAsPaid] = useInvoicePageButtons(params, invoice);
     const status = useSelector(state => state.status);
-    console.log(invoice);
 
     const formatDate = (dateString) => {
         if (!dateString) {

@@ -19,8 +19,6 @@ export const Form = ({ id, fetchedInvoiceState }) => {
     const status = useSelector(state => state.status);
 
     return (
-        // {/* <!-- Create new invoice form --> */ }
-        //   {/* <button>Go Back</button> - mobile*/ }
         <StyledForm active={status.formActive} onSubmit={handleSubmit}>
             <h2>New Invoice</h2>
             <section>
