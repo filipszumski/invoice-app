@@ -18,8 +18,12 @@ export const InvoicePage = () => {
     const invoice = useSelector(state => state.invoice);
     const [onEditButtonClick, onGoBackButtonClick, onDeleteButtonClick, onDeleteInvoiceButtonClick, markAsPaid] = useInvoicePageButtons(params, invoice);
     const status = useSelector(state => state.status);
+    console.log(invoice);
 
     const formatDate = (dateString) => {
+        if (!dateString) {
+            return "";
+        }
         const dateArrayStrings = dateString.split("-");
         const dateArrayNumbers = dateArrayStrings.map(item => parseInt(item, 10));
         return format(new Date(dateArrayNumbers[0], dateArrayNumbers[1], dateArrayNumbers[2]), "d MMM y");
