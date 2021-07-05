@@ -1,7 +1,7 @@
 import React from "react";
 import { UPDATE_STATE_OBJECT_KEY, UPDATE_STATE_KEY } from "../consts";
 
-export const Input = ({ id, name, label, type, state, dispatch, objectInStateName }) => {
+export const Input = ({ id, name, label, type, state, dispatch, objectInStateName, isValidation }) => {
     const getInputValue = () => {
         if (objectInStateName) {
             return state[objectInStateName][name];
@@ -25,6 +25,7 @@ export const Input = ({ id, name, label, type, state, dispatch, objectInStateNam
                 type={type}
                 value={getInputValue()}
                 onChange={onInputChange}
+                required={isValidation}
             />
         </p>
     )

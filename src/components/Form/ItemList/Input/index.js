@@ -1,7 +1,7 @@
 import React from "react";
 import { UPDATE_LIST_ITEM_OBJECT_KEY, UPDATE_LIST_ITEM_OBJECT_KEY_ON_INPUT_BLUR } from "../../consts";
 
-export const Input = ({ name, type, liIndex, liItem, dispatch, blur }) => {
+export const Input = ({ name, type, liIndex, liItem, dispatch, blur, isValidation }) => {
     const onInputChange = ({ target }) => {
 
         dispatch({
@@ -31,6 +31,7 @@ export const Input = ({ name, type, liIndex, liItem, dispatch, blur }) => {
             value={liItem[name]}
             onChange={onInputChange}
             onBlur={onInputBlur}
+            required={isValidation}
         />
     )
 }
