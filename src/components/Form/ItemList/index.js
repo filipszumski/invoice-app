@@ -3,7 +3,7 @@ import { Button } from "../../Button";
 import { Input } from "./Input";
 import { ADD_LIST_ITEM, DELETE_LIST_ITEM } from "../consts";
 
-export const ItemList = ({ invoice, dispatch }) => {
+export const ItemList = ({ invoice, dispatch, isValidation }) => {
     const onAddItemListButtonChange = () => {
         return dispatch({
             type: ADD_LIST_ITEM, payload: {
@@ -38,7 +38,7 @@ export const ItemList = ({ invoice, dispatch }) => {
                                 liItem={item}
                                 state={invoice}
                                 dispatch={dispatch}
-                                blur={false}
+                                isValidation={isValidation}
                             />
                             <Input
                                 name="quantity"
@@ -48,6 +48,7 @@ export const ItemList = ({ invoice, dispatch }) => {
                                 state={invoice}
                                 dispatch={dispatch}
                                 blur={true}
+                                isValidation={isValidation}
                             />
                             <Input
                                 name="price"
@@ -57,6 +58,7 @@ export const ItemList = ({ invoice, dispatch }) => {
                                 state={invoice}
                                 dispatch={dispatch}
                                 blur={true}
+                                isValidation={isValidation}
                             />
                             <span>{invoice.items[index].total || ""}</span>
                             <Button type="button" content="delete item" onClick={() => deleteListItem(index)} />
