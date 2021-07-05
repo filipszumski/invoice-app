@@ -13,7 +13,7 @@ export const Input = ({ id, name, label, type, state, dispatch, objectInStateNam
         if (objectInStateName) {
             return dispatch({ type: UPDATE_STATE_OBJECT_KEY, payload: { target: target, objectInStateName: objectInStateName } })
         }
-        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target, type: type } })
+        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target } })
     };
 
     return (

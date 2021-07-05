@@ -19,7 +19,7 @@ export const useForm = (id, fetchedInvoiceState) => {
             case stateActions.UPDATE_STATE_KEY:
                 return {
                     ...state,
-                    [payload.target.name]: payload.type === "number" ? +payload.target.value : payload.target.value
+                    [payload.target.name]: payload.target.type === "number" ? +payload.target.value : payload.target.value
                 };
             case stateActions.UPDATE_STATE_OBJECT_KEY:
                 return {
@@ -49,7 +49,7 @@ export const useForm = (id, fetchedInvoiceState) => {
                         if (index === payload.index) {
                             return {
                                 ...item,
-                                [payload.target.name]: (type === "number" ? +payload.target.value : payload.target.value) || ""
+                                [payload.target.name]: (payload.target.type === "number" ? +payload.target.value : payload.target.value) || ""
                             }
                         }
                         return { ...item }

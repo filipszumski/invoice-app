@@ -4,7 +4,7 @@ import { UPDATE_STATE_KEY } from "../consts";
 export const Select = ({ id, name, label, type, state, dispatch }) => {
 
     const onInputChange = ({ target }) => {
-        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target, type: type } })
+        return dispatch({ type: UPDATE_STATE_KEY, payload: { target: target } })
     };
     return (
         <p>
@@ -12,6 +12,7 @@ export const Select = ({ id, name, label, type, state, dispatch }) => {
             <select
                 id={id}
                 name={name}
+                type={type}
                 value={state[name]}
                 onChange={onInputChange}
             >
