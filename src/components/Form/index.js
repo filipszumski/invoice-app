@@ -15,7 +15,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
     const [
         handleSubmit,
         onCancelButtonClick,
-        onDiscardChangesButtonClick] = useFormButtons(invoice, id, dispatch, initialState);
+        onDiscardChangesButtonClick] = useFormButtons(invoice, id, dispatch, initialState, fetchedInvoiceState);
     const status = useSelector(state => state.status);
 
     return (

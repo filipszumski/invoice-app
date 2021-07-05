@@ -3,10 +3,10 @@ import addDays from 'date-fns/addDays'
 import { useDispatch } from "react-redux";
 import { displayForm, setStatus } from "../../store/status/status";
 import { postInvoice, patchInvoice } from "../../services/invoices";
-import { CLEAR_FORM } from "./consts";
+import { CLEAR_FORM, REPLACE_STATE } from "./consts";
 import * as statusStage from "../../shared/consts/stages";
 
-export const useFormButtons = (invoice, id, formStateDispatch, initialState) => {
+export const useFormButtons = (invoice, id, formStateDispatch, initialState, fetchedInvoiceState) => {
     const dispatch = useDispatch();
 
     const setPaymentDue = () => {
@@ -58,6 +58,7 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
             try {
                 await patchInvoice(id, {
                     ...invoice,
+                    status: status,
                     total: setInvoiceTotal(),
                     paymentDue: setPaymentDue(),
                 });
@@ -90,6 +91,7 @@ export const useFormButtons = (invoice, id, formStateDispatch, initialState) => 
 
     const onCancelButtonClick = () => {
         dispatch(displayForm(false));
+        formStateDispatch({ type: REPLACE_STATE, payload: fetchedInvoiceState })
     };
 
     const onDiscardChangesButtonClick = () => {
