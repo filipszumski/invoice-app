@@ -8,9 +8,9 @@ export const ItemList = ({ invoice, dispatch, isValidation }) => {
         return dispatch({
             type: ADD_LIST_ITEM, payload: {
                 name: "",
-                quantity: "",
-                price: "",
-                total: "",
+                quantity: 0,
+                price: 0,
+                total: 0,
             }
         })
     };
@@ -27,7 +27,6 @@ export const ItemList = ({ invoice, dispatch, isValidation }) => {
                     <span>Price</span>
                     <span>Total</span>
                 </li>
-                {/* generate elements */}
                 {invoice.items.length > 0 && invoice.items.map((item, index) => {
                     return (
                         <li key={index}>

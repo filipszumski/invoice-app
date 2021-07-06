@@ -34,7 +34,7 @@ export const useForm = (id, fetchedInvoiceState) => {
                     ...state,
                     items: [
                         ...state.items,
-                        { name: "", quantity: "", price: "", total: "" }
+                        payload
                     ]
                 };
             case stateActions.DELETE_LIST_ITEM:
