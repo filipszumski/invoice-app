@@ -12,7 +12,7 @@ export const useFetchInvoice = () => {
     const status = useSelector(state => state.status);
 
     useEffect(() => {
-        if (status.stage !== "loading") {
+        if (status.stage !== statusStage.loading) {
             return;
         };
 
