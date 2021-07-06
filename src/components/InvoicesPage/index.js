@@ -19,9 +19,10 @@ export const InvoicesPage = () => {
 
     const status = useSelector((state) => state.status);
     const dispatch = useDispatch();
+    const checkedFilters = (filters.filter(item => item.checked)).map(object => object.name);
+    console.log(checkedFilters);
     const filtredInvoices = useSelector(state => {
         const invoices = state.invoices;
-        const checkedFilters = (filters.filter(item => item.checked)).map(object => object.name);
 
         if (checkedFilters.length === 0) {
             return invoices;
@@ -40,7 +41,11 @@ export const InvoicesPage = () => {
                             <header>
                                 <div>
                                     <h1>Invoices</h1>
-                                    <p>{filtredInvoices.length ? `There are ${filtredInvoices.length} total invoices` : "No invoices"}</p>
+                                    <p>{filtredInvoices.length
+                                        ? `There are ${filtredInvoices.length} ${!checkedFilters.length || checkedFilters.length === filters.length
+                                            ? "total"
+                                            : checkedFilters.join(" & ")} invoices`
+                                        : "No invoices"}</p>
                                 </div>
                                 <div>
                                     <Filter filters={filters} setFilters={setFilters} />
