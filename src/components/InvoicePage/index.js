@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { toInvoices } from "../../shared/routes";
 import * as statusStage from "../../shared/consts/stages";
 import { paidStatus } from "./consts";
+import { StyledMain } from "../StyledMain";
 
 export const InvoicePage = () => {
     useFetchInvoice();
@@ -29,7 +30,7 @@ export const InvoicePage = () => {
     };
     return (
         <>
-            <main>
+            <StyledMain>
 
                 {status.stage === statusStage.loading
                     ? <p>Loading in progress...</p>
@@ -112,7 +113,7 @@ export const InvoicePage = () => {
                             </section>
                         </>)}
 
-            </main>
+            </StyledMain>
             {Object.keys(invoice).length > 0 && status.stage === statusStage.success && (
                 <Form id={params.id} fetchedInvoiceState={invoice} />
             )}
