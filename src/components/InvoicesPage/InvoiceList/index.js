@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { setStatus } from "../../../store/status/status";
 import { toInvoice } from "../../../shared/routes";
 import * as statusStage from "../../../shared/consts/stages";
+import { StyledParagraph, StyledSection } from "./styled";
 
-export const InvoiceList = ({filtredInvoices}) => {
+export const InvoiceList = ({ filtredInvoices }) => {
     const dispatch = useDispatch();
 
     return (
-        <section>
+        <StyledSection noInvoices={!filtredInvoices.length}>
             {filtredInvoices.length === 0
                 ? <>
                     <h2>There is nothing here</h2>
@@ -17,15 +18,15 @@ export const InvoiceList = ({filtredInvoices}) => {
                 </>
                 : filtredInvoices.map((invoice) => (
                     <Link onClick={() => dispatch(setStatus(statusStage.loading))} key={invoice.id} to={toInvoice(invoice.id)}>
-                        <p key={invoice.id}>
-                            <span>{invoice.id}</span>{ }
+                        <StyledParagraph key={invoice.id}>
+                            <span>#{invoice.id}</span>{ }
                             <span>{invoice.paymentDue}</span>
                             <span>{invoice.clientName}</span>
                             <span>{invoice.total}</span>
                             <span>{invoice.status}</span>
-                        </p>
+                        </StyledParagraph>
                     </Link>
                 ))}
-        </section>
+        </StyledSection>
     )
 }
