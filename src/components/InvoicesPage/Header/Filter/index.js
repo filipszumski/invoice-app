@@ -10,7 +10,7 @@ export const Filter = ({ filters, setFilters }) => {
             if (popupRef.current === target) {
                 return;
             }
-            if (popupRef.current.contains(target)) {
+            if (popupRef.current && popupRef.current.contains(target)) {
                 return;
             }
             return setActive(false);
