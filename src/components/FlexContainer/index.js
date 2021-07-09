@@ -10,4 +10,16 @@ export const FlexContainer = styled.div`
     ${({ alignCenter }) => alignCenter && css`
         align-items: center;
     `};
+
+    ${({ spaceBetween }) => spaceBetween && css`
+        justify-content: space-between;
+    `};
+
+    ${({ strech }) => strech && css`
+        flex 1;
+    `};
+
+    ${({ directionColumn }) => directionColumn && css`
+        flex-direction: column;
+    `};
 `;
