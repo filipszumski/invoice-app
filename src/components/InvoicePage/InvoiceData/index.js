@@ -2,12 +2,14 @@ import React from "react";
 import { format } from "date-fns";
 import { FlexContainer } from "../../FlexContainer";
 import {
-    Data as SenderAdress,
-    Data as ClientNameAndAdress,
-    Data as PaymentDue,
-    Data as InvoiceDate,
-    Data as Dates,
-    Data as ClientEmail,
+    Paragraph as SenderAdress,
+    Paragraph as ClientNameAndAdress,
+    Paragraph as PaymentDue,
+    Paragraph as InvoiceDate,
+    Paragraph as ClientEmail,
+    ItemsList,
+    ListItem,
+    AmountDue
 } from "./styled";
 
 export const InvoiceData = ({ invoice }) => {
@@ -59,26 +61,26 @@ export const InvoiceData = ({ invoice }) => {
                 </ClientEmail>
             </FlexContainer>
             <div>
-                <ul>
-                    <li>
+                <ItemsList>
+                    <ListItem>
                         <span>Item Name</span>
                         <span>Qty.</span>
                         <span>Price</span>
                         <span>Total</span>
-                    </li>
+                    </ListItem>
                     {invoice.items.map((item, index) => (
-                        <li key={index}>
+                        <ListItem key={index}>
                             <span>{item.name}</span>
                             <span>{item.quantity}</span>
                             <span>{item.price}</span>
                             <span>{item.total}</span>
-                        </li>
+                        </ListItem>
                     ))}
-                </ul>
-                <p>
+                </ItemsList>
+                <AmountDue >
                     <span>Amount Due</span>
                     <span>${invoice.total}</span>
-                </p>
+                </AmountDue>
             </div>
         </section>
     )
