@@ -6,5 +6,5 @@ export const StyledMain = styled.main`
     display: flex;
     flex-direction: column;
     height: 100%;
-    gap: 30px;
+    gap: 20px;
 `;
