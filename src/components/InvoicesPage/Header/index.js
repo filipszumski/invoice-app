@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { displayForm } from "../../../store/status/status";
 import { Button } from "../../Button";
 import { FlexContainer } from "../../FlexContainer";
+import { StyledHeader } from "../../StyledHeader";
 import { Filter } from "./Filter/index";
-import { StyledHeader, StyledParagraph, StyledTitle } from "./styled";
+import { StyledParagraph, StyledTitle } from "./styled";
 
 export const Header = ({ filtredInvoices, checkedFilters, filters, setFilters }) => {
     const dispatch = useDispatch();
