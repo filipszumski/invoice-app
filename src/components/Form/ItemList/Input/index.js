@@ -1,5 +1,6 @@
 import React from "react";
 import { UPDATE_LIST_ITEM_OBJECT_KEY, UPDATE_LIST_ITEM_OBJECT_KEY_ON_INPUT_BLUR } from "../../consts";
+import { StyledInput } from "./styled";
 
 export const Input = ({ name, type, liIndex, liItem, dispatch, blur, isValidation }) => {
     const onInputChange = ({ target }) => {
@@ -25,7 +26,7 @@ export const Input = ({ name, type, liIndex, liItem, dispatch, blur, isValidatio
     }
 
     return (
-        <input
+        <StyledInput
             name={name}
             type={type}
             value={liItem[name]}

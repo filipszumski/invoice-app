@@ -1,7 +1,8 @@
 import React from "react";
 import { UPDATE_STATE_OBJECT_KEY, UPDATE_STATE_KEY } from "../consts";
+import { Wrapper, StyledInput } from "./styled";
 
-export const Input = ({ id, name, label, type, state, dispatch, objectInStateName, isValidation }) => {
+export const Input = ({ id, name, label, type, state, dispatch, objectInStateName, isValidation, flex }) => {
     const getInputValue = () => {
         if (objectInStateName) {
             return state[objectInStateName][name];
@@ -17,9 +18,9 @@ export const Input = ({ id, name, label, type, state, dispatch, objectInStateNam
     };
 
     return (
-        <p>
+        <Wrapper flex>
             <label htmlFor={id}>{label}</label>
-            <input
+            <StyledInput
                 id={id}
                 name={name}
                 type={type}
@@ -27,6 +28,6 @@ export const Input = ({ id, name, label, type, state, dispatch, objectInStateNam
                 onChange={onInputChange}
                 required={isValidation}
             />
-        </p>
+        </Wrapper>
     )
 };
