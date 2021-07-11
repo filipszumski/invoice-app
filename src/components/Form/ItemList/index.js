@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../../Button";
 import { Input } from "./Input";
 import { ADD_LIST_ITEM, DELETE_LIST_ITEM } from "../consts";
+import { List, ListItem } from "./styled";
 
 export const ItemList = ({ invoice, dispatch, isValidation }) => {
     const onAddItemListButtonChange = () => {
@@ -18,18 +19,19 @@ export const ItemList = ({ invoice, dispatch, isValidation }) => {
     const deleteListItem = (index) => dispatch({ type: DELETE_LIST_ITEM, payload: index });
 
     return (
-        <section>
+        <>
             <h3>Item List</h3>
-            <ul>
-                <li>
+            <List>
+                <ListItem>
                     <span>Item Name</span>
                     <span>Qty.</span>
                     <span>Price</span>
                     <span>Total</span>
-                </li>
+                    <span>x</span>
+                </ListItem>
                 {invoice.items.length > 0 && invoice.items.map((item, index) => {
                     return (
-                        <li key={index}>
+                        <ListItem key={index}>
                             <Input
                                 name="name"
                                 type="text"
@@ -60,17 +62,22 @@ export const ItemList = ({ invoice, dispatch, isValidation }) => {
                                 isValidation={isValidation}
                             />
                             <span>{invoice.items[index].total || ""}</span>
-                            <Button type="button" content="delete item" onClick={() => deleteListItem(index)} />
-                        </li>
+                            <Button
+                                type="button"
+                                content="delete item"
+                                onClick={() => deleteListItem(index)}
+                            />
+                        </ListItem>
                     )
                 })}
-            </ul>
+            </List>
             {/* should be full width */}
             <Button
                 onClick={onAddItemListButtonChange}
                 type="button"
                 content={"+ Add New Item"}
+                streched={true}
             />
-        </section>
+        </>
     )
 }
