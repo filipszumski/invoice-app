@@ -9,7 +9,7 @@ import { useFetchInvoice } from "./useFetchInvoice";
 import { Link } from "react-router-dom";
 import { toInvoices } from "../../shared/routes";
 import * as statusStage from "../../shared/consts/stages";
-import { StyledMain } from "../StyledMain";
+import { StyledMain } from "../common/StyledMain";
 import { Header } from "./Header";
 import { InvoiceData } from "./InvoiceData";
 

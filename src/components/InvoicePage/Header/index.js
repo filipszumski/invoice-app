@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../../Button";
-import { FlexContainer } from "../../FlexContainer";
-import { StyledHeader } from "../../StyledHeader";
+import { FlexContainer } from "../../common/FlexContainer";
+import { StyledHeader } from "../..//common/StyledHeader";
 import { paidStatus } from "../consts";
 
 export const Header = ({ invoice, onEditButtonClick, markAsPaid, onDeleteButtonClick }) => {

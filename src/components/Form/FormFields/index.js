@@ -1,5 +1,5 @@
 import React from "react";
-import { FlexContainer } from "../../FlexContainer";
+import { FlexContainer } from "../../common/FlexContainer";
 import { Input } from "../Input";
 import { Select } from "../Select";
 import { Fieldset } from "./styled";

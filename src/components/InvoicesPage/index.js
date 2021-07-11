@@ -5,7 +5,7 @@ import { useFetchInvoices } from "./useFetchInvoices";
 import * as statusStage from "../../shared/consts/stages";
 import { Header } from "./Header";
 import { InvoiceList } from "./InvoiceList";
-import { StyledMain } from "../StyledMain";
+import { StyledMain } from "../common/StyledMain";
 
 export const InvoicesPage = () => {
     useFetchInvoices();

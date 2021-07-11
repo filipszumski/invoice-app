@@ -1,6 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
-import { FlexContainer } from "../../FlexContainer";
+import { FlexContainer } from "../../common/FlexContainer";
 import {
     Paragraph as SenderAdress,
     Paragraph as ClientNameAndAdress,

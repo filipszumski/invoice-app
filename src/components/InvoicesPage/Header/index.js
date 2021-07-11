@@ -2,8 +2,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { displayForm } from "../../../store/status/status";
 import { Button } from "../../Button";
-import { FlexContainer } from "../../FlexContainer";
-import { StyledHeader } from "../../StyledHeader";
+import { FlexContainer } from "../../common/FlexContainer";
+import { StyledHeader } from "../../common/StyledHeader";
 import { Filter } from "./Filter/index";
 import { StyledParagraph, StyledTitle } from "./styled";
 

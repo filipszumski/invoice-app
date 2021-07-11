@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { InvoicesPage } from "./components/InvoicesPage";
 import { InvoicePage } from "./components/InvoicePage";
-import { Overlay } from "./components/Overlay/styled";
+import { Overlay } from "./components/common/Overlay/styled";
 import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import { toInvoice, toInvoices } from "./shared/routes";
 
