@@ -1,17 +1,21 @@
 import React from "react";
-import { StyledButton } from "./styled";
+import { StyledButton, ExtraContent } from "./styled";
 
 export const Button = ({ content, extraContent, onClick, type, status,
-    streched }) => {
+    streched, boxShadow, buttonStyle, brigthBackground }) => {
 
     return (
         <StyledButton
             onClick={onClick}
             type={type}
             data-status={status}
-            streched={streched ? true : false}
+            streched={streched}
+            boxShadow={boxShadow}
+            buttonStyle={buttonStyle}
+            extraContent={extraContent}
+            brigthBackground={brigthBackground}
         >
-            {extraContent ? extraContent : ""} {content}
+            {extraContent ? <ExtraContent>{extraContent}</ExtraContent> : ""}<span>{content}</span>
         </StyledButton>
     )
 };
