@@ -9,8 +9,10 @@ import {
     Paragraph as ClientEmail,
     ItemsList,
     ListItem,
-    AmountDue
+    AmountDue,
+    StyledSpan,
 } from "./styled";
+import { Wrapper } from "../styled";
 
 export const InvoiceData = ({ invoice }) => {
     const formatDate = (dateString) => {
@@ -23,10 +25,10 @@ export const InvoiceData = ({ invoice }) => {
     };
 
     return (
-        <section>
+        <Wrapper grid>
             <FlexContainer spaceBetween>
                 <header>
-                    <h2>#{invoice.id}</h2>
+                    <h2>#<StyledSpan title bold highlighted>{invoice.id}</StyledSpan></h2>
                     <span>{invoice.description}</span>
                 </header>
                 <SenderAdress>
@@ -40,16 +42,16 @@ export const InvoiceData = ({ invoice }) => {
                 <FlexContainer directionColumn strech>
                     <InvoiceDate>
                         <span>Invoice Date</span>
-                        <span>{formatDate(invoice.createdAt)}</span>
+                        <StyledSpan important bold highlighted>{formatDate(invoice.createdAt)}</StyledSpan>
                     </InvoiceDate>
                     <PaymentDue>
                         <span>Payment Due</span>
-                        <span>{formatDate(invoice.paymentDue)}</span>
+                        <StyledSpan important bold highlighted>{formatDate(invoice.paymentDue)}</StyledSpan>
                     </PaymentDue>
                 </FlexContainer>
                 <ClientNameAndAdress strech>
                     <span>Bill To</span>
-                    <span>{invoice.clientName}</span>
+                    <StyledSpan important bold highlighted>{invoice.clientName}</StyledSpan>
                     <span>{invoice.clientAddress.street}</span>
                     <span>{invoice.clientAddress.city}</span>
                     <span>{invoice.clientAddress.postCode}</span>
@@ -57,31 +59,31 @@ export const InvoiceData = ({ invoice }) => {
                 </ClientNameAndAdress>
                 <ClientEmail alignContentStart strech>
                     <span>Sent To</span>
-                    <span>{invoice.clientEmail}</span>
+                    <StyledSpan important bold highlighted>{invoice.clientEmail}</StyledSpan>
                 </ClientEmail>
             </FlexContainer>
             <div>
                 <ItemsList>
                     <ListItem>
-                        <span>Item Name</span>
-                        <span>Qty.</span>
-                        <span>Price</span>
-                        <span>Total</span>
+                        <StyledSpan>Item Name</StyledSpan>
+                        <StyledSpan justifyEnd>Qty.</StyledSpan>
+                        <StyledSpan justifyEnd>Price</StyledSpan>
+                        <StyledSpan justifyEnd>Total</StyledSpan>
                     </ListItem>
                     {invoice.items.map((item, index) => (
                         <ListItem key={index}>
-                            <span>{item.name}</span>
-                            <span>{item.quantity}</span>
-                            <span>{item.price}</span>
-                            <span>{item.total}</span>
+                            <StyledSpan bold highlighted>{item.name}</StyledSpan>
+                            <StyledSpan justifyEnd bold>{item.quantity}</StyledSpan>
+                            <StyledSpan justifyEnd bold>${item.price}</StyledSpan>
+                            <StyledSpan justifyEnd bold highlighted>${item.total}</StyledSpan>
                         </ListItem>
                     ))}
                 </ItemsList>
                 <AmountDue >
-                    <span>Amount Due</span>
-                    <span>${invoice.total}</span>
+                    <StyledSpan amountDue>Amount Due</StyledSpan>
+                    <StyledSpan amountDue important>${invoice.total}</StyledSpan>
                 </AmountDue>
             </div>
-        </section>
+        </Wrapper>
     )
 }
