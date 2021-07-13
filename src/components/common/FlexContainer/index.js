@@ -22,4 +22,8 @@ export const FlexContainer = styled.div`
     ${({ directionColumn }) => directionColumn && css`
         flex-direction: column;
     `};
+
+    ${({ gap }) => gap && css`
+        gap: 10px;
+    `};
 `;
