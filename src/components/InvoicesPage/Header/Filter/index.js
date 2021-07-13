@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Wrapper, Options, Button } from "./styled";
+import { Wrapper, Options, Button, ButtonText, Option } from "./styled";
 
 export const Filter = ({ filters, setFilters }) => {
     const [active, setActive] = useState(false);
@@ -34,10 +34,16 @@ export const Filter = ({ filters, setFilters }) => {
 
     return (
         <Wrapper>
-            <Button onClick={() => setActive(!active)}>Filter by status</Button>
+            <Button onClick={() => setActive(!active)}>
+                <ButtonText>Filter by status</ButtonText>
+                {<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L5.2279 5.2279L9.4558 1" stroke="#7C5DFA" strokeWidth="2" />
+                </svg>
+                }
+            </Button>
             <Options ref={popupRef} active={active}>
                 {filters.map(filter => (
-                    <p key={filter.id}>
+                    <Option key={filter.id}>
                         <input
                             id={filter.name}
                             type={filter.type}
@@ -46,7 +52,7 @@ export const Filter = ({ filters, setFilters }) => {
                             onChange={onInputChange}
                         />
                         <label htmlFor={filter.name}>{filter.label}</label>
-                    </p>
+                    </Option>
                 ))}
             </Options>
         </Wrapper>

@@ -28,7 +28,7 @@ export const InvoicesPage = () => {
 
     return (
         <>
-            <StyledMain>
+            <StyledMain noInvoices={!filtredInvoices.length}>
                 {status.stage === statusStage.loading
                     ? <p>Loading in progress...</p>
                     : status.stage === statusStage.error
