@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Buttons } from "./Buttons";
-import { FormSection, StyledForm } from "./styled";
+import { FormSection, StyledForm, Title } from "./styled";
 import { ItemList } from "./ItemList";
 import { useForm } from "./useForm";
 import { useFormButtons } from "./useFormButtons";
@@ -19,7 +19,7 @@ export const Form = ({ id, fetchedInvoiceState }) => {
 
     return (
         <StyledForm active={status.formActive} onSubmit={handleSubmit}>
-            <h2>New Invoice</h2>
+            <Title>New Invoice</Title>
             <FormSection>
                 <FormFields
                     invoice={invoice}

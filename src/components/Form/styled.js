@@ -32,3 +32,8 @@ export const FormSection = styled.section`
         justify-content: space-between;
     `}
 `;
+
+export const Title = styled.h2`
+    font-size: ${({theme}) => theme.font.size.subtitle};
+    color: ${({theme}) => theme.font.color.highlighted};
+`;
