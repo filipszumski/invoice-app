@@ -5,12 +5,10 @@ import 'normalize.css';
 import store from "./store/store";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { GlobalStyle } from './GlobalStyle';
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <GlobalStyle />
       <App />
     </React.StrictMode>
   </Provider>,
